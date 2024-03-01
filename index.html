@@ -1,46 +1,80 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<title>Kodexempel 3</title>
-		<link rel="stylesheet" type="text/css" href="styles.css">
-	</head>
-	<body>
-		<div id="container">
-			<div id="messages">
-				<p class="message">Carl: Hi | 2021-03-05</p>
-				<p class="message">Maria: Hello | 2021-03-05</p>
-			</div>
-			<div id="buttons">
-				<input type="text" id="input">
-				<input type="button" id="btn_send" value="Send">
-			</div>
-		</div>
+<html lang="sv">
+    <head>
+        <meta charset="utf-8">
+        <title>Tic-Tac-Toe</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="styles/styles.css">
+        <style type="text/css">
+            .d-none{
+                display: none !important;
+            }
+        </style>
+    </head>
+    <body>
+    
+        <main>
+            <div class="jumbotron text-center">
+                <h1>Tic-Tac-Toe</h1>
+                <p id="errorMsg">Fyll i nicknames samt färg och börja spela!</p>
+            </div>
+            <form> 
+                <div id="div-in-form">
+                    <div class="col">
+                        <label for="nick1">Nickname spelare 1:</label>
+                        <input type="text" id="nick1" placeholder="nickname" title="nickname för spelare 1">
+                    </div>
+                    <div class="col">
+                        <label for="nick2">Nickname spelare 2:</label>
+                        <input type="text" id="nick2" placeholder="nickname" title="nickname för spelare 2">
+                    </div>
+                    <div class="col">
+                        <label for="color1">Färg spelare 1:</label>
+                        <input type="color" id="color1" value="#FFFFFF" placeholder="nickname" title="färg för spelare 1">
+                    </div>
+                    <div class="col">
+                        <label for="color2">Färg spelare 2:</label>
+                        <input type="color" id="color2" value="#FFFFFF" placeholder="nickname" title="färg för spelare 2">
+                    </div>
+                    <div id="div-with-a">
+                        <a href="#" id="newGame" >Starta spelet!</a>
+                    </div>              
+                </div>
+            </form>
 
-		<script type="text/javascript">
-			let input = document.getElementById("input");
-			let btn = document.querySelector("#btn_send");
-			let msg = document.getElementById("messages");
-			console.log(input, btn, msg);
+            <!-- Gui för spelplan-->
+            <div id="game-area" class="gameArea">
+                <!-- Varje tabell-cell(td) märks med attributet data-id -->
+                <table class="ml-auto mr-auto">
 
-			function createMessage(username,text){
-				let p = document.createElement("p");
-				p.setAttribute("class","message");
-				let date = new Date();
+                    <tr>                
+                        <td data-id='0'> </td>
+                        <td data-id='1'> </td>
+                        <td data-id='2'> </td>
+                    </tr>
+                    <tr>
+                        <td data-id='3'> </td>
+                        <td data-id='4'> </td>
+                        <td data-id='5'> </td>
+                    </tr>
+                    <tr>
+                        <td data-id='6'> </td>
+                        <td data-id='7'> </td>
+                        <td data-id='8'> </td>
+                    </tr>
 
-				let time = date.toLocaleTimeString("sv-SE");
+                </table>
+            </div>
+            
+        </main>
+        <aside>
+            <a href="#">
+                <!--creative common, bildkälla: https://www.pinterest.se/pin/444871269436524427/ -->
+                <img src="images/side-ad.jpg">
+            </a>
+        </aside>
+    
 
-				p.textContent = username + ": " + text + " | " + time;
-
-				msg.appendChild(p);
-				if(text == "fortnite"){
-					createMessage("Bot", "Quote");
-				}
-			}
-			createMessage("Albin", "fortnite");
-			btn.addEventListener("click",function(){
-				createMessage("Albin",input.value);
-			})
-
-		</script>
-	</body>
+       <script src="js/JSFunctions.js"></script>
+    </body>
 </html>
