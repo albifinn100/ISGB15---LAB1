@@ -90,6 +90,9 @@ oGameData.checkForGameOver = function () {
 
     //TODO: Albin
     let checkHorizontal = function () {
+        if (oGameData.gameField[0] == "X" && oGameData.gameField[1] == "X" && oGameData.gameField[2] == "X") {
+            return
+        }
 
     }
     //TODO: Oskar 
