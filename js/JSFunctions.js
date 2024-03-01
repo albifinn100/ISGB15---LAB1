@@ -29,7 +29,7 @@ let oGameData = {};
 
 const M_NO = "";
 const M_P1 = "X";
-const M_P2 = "O"
+const M_P2 = "O";
 
 /**
  * Initerar det globala objektet med de attribut som ni skall använda er av.
@@ -49,10 +49,10 @@ oGameData.initGlobalObject = function () {
     //oGameData.gameField = Array(M_P1, M_P2, M_P1, '0', M_P1, M_P2, M_P2, M_P1, M_P2);
 
     //Indikerar tecknet som skall användas för spelare ett.
-    oGameData.playerOne = "X";
+    oGameData.playerOne = M_P1;
 
     //Indikerar tecknet som skall användas för spelare två.
-    oGameData.playerTwo = "O";
+    oGameData.playerTwo = M_P2;
 
     //Kan anta värdet X eller O och indikerar vilken spelare som för tillfället skall lägga sin "bricka".
     oGameData.currentPlayer = "";
@@ -95,26 +95,26 @@ oGameData.checkForGameOver = function () {
     //TODO: Albin
     let checkHorizontal = function () {
         //Check 1st row
-        if (oGameData.gameField[0] == "X" && oGameData.gameField[1] == "X" && oGameData.gameField[2] == "X") {
+        if (oGameData.gameField[0] == M_P1 && oGameData.gameField[1] == M_P1 && oGameData.gameField[2] == M_P1) {
             return X_WINNER;
         }
-        if (oGameData.gameField[0] == "O" && oGameData.gameField[1] == "O" && oGameData.gameField[2] == "O") {
+        if (oGameData.gameField[0] == M_P2 && oGameData.gameField[1] == M_P2 && oGameData.gameField[2] == M_P2) {
             return O_WINNER;
         }
 
         //Check 2nd row
-        if (oGameData.gameField[3] == "X" && oGameData.gameField[4] == "X" && oGameData.gameField[5] == "X") {
+        if (oGameData.gameField[3] == M_P1 && oGameData.gameField[4] == M_P1 && oGameData.gameField[5] == M_P1) {
             return X_WINNER;
         }
-        if (oGameData.gameField[3] == "O" && oGameData.gameField[4] == "O" && oGameData.gameField[5] == "O") {
+        if (oGameData.gameField[3] == M_P2 && oGameData.gameField[4] == M_P2 && oGameData.gameField[5] == M_P2) {
             return O_WINNER;
         }
 
         //Check 3rd row
-        if (oGameData.gameField[6] == "X" && oGameData.gameField[7] == "X" && oGameData.gameField[8] == "X") {
+        if (oGameData.gameField[6] == M_P1 && oGameData.gameField[7] == M_P1 && oGameData.gameField[8] == M_P1) {
             return X_WINNER;
         }
-        if (oGameData.gameField[6] == "O" && oGameData.gameField[7] == "O" && oGameData.gameField[8] == "O") {
+        if (oGameData.gameField[6] == M_P2 && oGameData.gameField[7] == M_P2 && oGameData.gameField[8] == M_P2) {
             return O_WINNER;
         }
         // No horizontal result
@@ -124,15 +124,15 @@ oGameData.checkForGameOver = function () {
     }
     //TODO: Oskar 
     let checkVertical = function () {
-        if (oGameData.gameField[0] === "X" && oGameData.gameField[3] === "X" && oGameData.gameField[6] === "X"
-            || oGameData.gameField[1] === "X" && oGameData.gameField[4] === "X" && oGameData.gameField[7] === "X"
-            || oGameData.gameField[2] === "X" && oGameData.gameField[5] === "X" && oGameData.gameField[8] === "X") {
+        if (oGameData.gameField[0] === M_P1 && oGameData.gameField[3] === M_P1 && oGameData.gameField[6] === M_P1
+            || oGameData.gameField[1] === M_P1 && oGameData.gameField[4] === M_P1 && oGameData.gameField[7] === M_P1
+            || oGameData.gameField[2] === M_P1 && oGameData.gameField[5] === M_P1 && oGameData.gameField[8] === M_P1) {
             return X_WINNER;
         }
 
-        if (oGameData.gameField[0] === "O" && oGameData.gameField[3] === "O" && oGameData.gameField[6] === "O"
-            || oGameData.gameField[1] === "O" && oGameData.gameField[4] === "O" && oGameData.gameField[7] === "O"
-            || oGameData.gameField[2] === "O" && oGameData.gameField[5] === "O" && oGameData.gameField[8] === "O") {
+        if (oGameData.gameField[0] === M_P2 && oGameData.gameField[3] === M_P2 && oGameData.gameField[6] === M_P2
+            || oGameData.gameField[1] === M_P2 && oGameData.gameField[4] === M_P2 && oGameData.gameField[7] === M_P2
+            || oGameData.gameField[2] === M_P2 && oGameData.gameField[5] === M_P2 && oGameData.gameField[8] === M_P2) {
             return O_WINNER;
         }
         return NO_WINNER;
@@ -140,17 +140,17 @@ oGameData.checkForGameOver = function () {
     //TODO: Colin
     let checkDiagonal = function () {
         // Backslash Diagonal
-        if (oGameData.gameField[0] == "X" && oGameData.gameField[4] == "X" && oGameData.gameField[8] == "X") {
+        if (oGameData.gameField[0] == M_P1 && oGameData.gameField[4] == M_P1 && oGameData.gameField[8] == M_P1) {
             return X_WINNER;
         }
-        if (oGameData.gameField[0] == "O" && oGameData.gameField[4] == "O" && oGameData.gameField[8] == "O") {
+        if (oGameData.gameField[0] == M_P2 && oGameData.gameField[4] == M_P2 && oGameData.gameField[8] == M_P2) {
             return O_WINNER;
         }
         // Forwardslash Diagonal
-        if (oGameData.gameField[2] == "X" && oGameData.gameField[4] == "X" && oGameData.gameField[6] == "X") {
+        if (oGameData.gameField[2] == M_P1 && oGameData.gameField[4] == M_P1 && oGameData.gameField[6] == M_P1) {
             return X_WINNER;
         }
-        if (oGameData.gameField[2] == "O" && oGameData.gameField[4] == "O" && oGameData.gameField[6] == "O") {
+        if (oGameData.gameField[2] == M_P2 && oGameData.gameField[4] == M_P2 && oGameData.gameField[6] == M_P2) {
             return O_WINNER;
         }
         // No diagonal result
@@ -231,4 +231,4 @@ function randomizedTest() {
     }
 }
 
-randomizedTest();
+// randomizedTest();
