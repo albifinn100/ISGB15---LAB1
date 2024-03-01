@@ -27,6 +27,10 @@ console.log( oGameData.checkForDraw() );
  */
 let oGameData = {};
 
+const M_NO = "";
+const M_P1 = "X";
+const M_P2 = "O"
+
 /**
  * Initerar det globala objektet med de attribut som ni skall använda er av.
  * Funktionen tar inte emot några värden.
@@ -35,14 +39,14 @@ let oGameData = {};
 oGameData.initGlobalObject = function () {
 
     //Datastruktur för vilka platser som är lediga respektive har brickor
-    oGameData.gameField = new Array('', '', '', '', '', '', '', '', '');
+    oGameData.gameField = new Array(M_NO, M_NO, M_NO, M_NO, M_NO, M_NO, M_NO, M_NO, M_NO);
 
     /* Testdata för att testa rättningslösning */
-    //oGameData.gameField = Array('X', 'X', 'X', '', '', '', '', '', '');
-    //oGameData.gameField = Array('X', '', '', 'X', '', '', 'X', '', '');
-    //oGameData.gameField = Array('X', '', '', '', 'X', '', '', '', 'X');
-    //oGameData.gameField = Array('', '', 'X', '', 'X', '', 'X', '', '');
-    //oGameData.gameField = Array('X', 'O', 'X', '0', 'X', 'O', 'O', 'X', 'O');
+    //oGameData.gameField = Array(M_P1, M_P1, M_P1, M_NO, M_NO, M_NO, M_NO, M_NO, M_NO);
+    //oGameData.gameField = Array(M_P1, M_NO, M_NO, M_P1, M_NO, M_NO, M_P1, M_NO, M_NO);
+    //oGameData.gameField = Array(M_P1, M_NO, M_NO, M_NO, M_P1, M_NO, M_NO, M_NO, M_P1);
+    //oGameData.gameField = Array(M_NO, M_NO, M_P1, M_NO, M_P1, M_NO, M_P1, M_NO, M_NO);
+    //oGameData.gameField = Array(M_P1, M_P2, M_P1, '0', M_P1, M_P2, M_P2, M_P1, M_P2);
 
     //Indikerar tecknet som skall användas för spelare ett.
     oGameData.playerOne = "X";
@@ -82,12 +86,12 @@ oGameData.initGlobalObject = function () {
  * Funktionen tar inte emot några värden.
  */
 
-oGameData.checkForGameOver = function () {
-    const NO_WINNER = 0;
-    const X_WINNER = 1;
-    const O_WINNER = 2;
-    const DRAW = 3;
+const NO_WINNER = 0;
+const X_WINNER = 1;
+const O_WINNER = 2;
+const DRAW = 3;
 
+oGameData.checkForGameOver = function () {
     //TODO: Albin
     let checkHorizontal = function () {
         //Check 1st row
@@ -131,40 +135,41 @@ oGameData.checkForGameOver = function () {
             || oGameData.gameField[2] === "O" && oGameData.gameField[5] === "O" && oGameData.gameField[8] === "O") {
             return O_WINNER;
         }
-
+        return NO_WINNER;
     }
     //TODO: Colin
     let checkDiagonal = function () {
         // Backslash Diagonal
-        if (oGameData.gameField[0] == "X" && oGameData.gameField[5] == "X" && oGameData.gameField[9] == "X") {
+        if (oGameData.gameField[0] == "X" && oGameData.gameField[4] == "X" && oGameData.gameField[8] == "X") {
             return X_WINNER;
         }
-        if (oGameData.gameField[0] == "O" && oGameData.gameField[5] == "O" && oGameData.gameField[9] == "O") {
+        if (oGameData.gameField[0] == "O" && oGameData.gameField[4] == "O" && oGameData.gameField[8] == "O") {
             return O_WINNER;
         }
         // Forwardslash Diagonal
-        if (oGameData.gameField[3] == "X" && oGameData.gameField[5] == "X" && oGameData.gameField[7] == "X") {
+        if (oGameData.gameField[2] == "X" && oGameData.gameField[4] == "X" && oGameData.gameField[6] == "X") {
             return X_WINNER;
         }
-        if (oGameData.gameField[3] == "O" && oGameData.gameField[5] == "O" && oGameData.gameField[7] == "O") {
+        if (oGameData.gameField[2] == "O" && oGameData.gameField[4] == "O" && oGameData.gameField[6] == "O") {
             return O_WINNER;
         }
         // No diagonal result
         return NO_WINNER;
     }
 
+    let result;
     let checkArr = [checkHorizontal, checkVertical, checkDiagonal];
-    checkArr.forEach(function (checkFunc) {
-        let result = checkFunc();
-        if (result !== 0) {
+    for (let i = 0; i < checkArr.length; i++) {
+        result = checkArr[i]();
+        if (result !== NO_WINNER) {
             return result;
         }
-    });
+    }
 
     // Check for draw
     function isGameDrawn() {
         for (let field of oGameData.gameField) {
-            if (field === '') {
+            if (field === M_NO) {
                 return false;
             }
         };
@@ -178,13 +183,52 @@ oGameData.checkForGameOver = function () {
     return NO_WINNER;
 }
 
+// Manual Test
+/*
+oGameData.gameField = [
+    M_P1, M_P2, M_NO,
+    M_NO, M_P1, M_NO,
+    M_NO, M_P2, M_P1];
+*/
+// console.log(oGameData.gameField);
+// console.log(oGameData.checkForGameOver());
 
-oGameData.gameField = ['X', 'O', '', '', '', '', '', '', ''];
-console.log(oGameData);
-console.log(oGameData.checkForGameOver());
+oGameData.initGlobalObject();
 
+// Randomized Test
 function randomizedTest() {
-    for (let i = 0; i < 100; i++) {
-        // TODO
+    let possibleFields = [M_NO, M_P1, M_P2];
+    for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < oGameData.gameField.length; i++) {
+            let setField = Math.floor(Math.random() * possibleFields.length);
+            oGameData.gameField[i] = possibleFields[setField];
+        };
+        function getField(field) {
+            if (field == "") {
+                return "_";
+            }
+            return field;
+        }
+        console.log("",
+            getField(oGameData.gameField[0]), getField(oGameData.gameField[1]), getField(oGameData.gameField[2]), "\n",
+            getField(oGameData.gameField[3]), getField(oGameData.gameField[4]), getField(oGameData.gameField[5]), "\n",
+            getField(oGameData.gameField[6]), getField(oGameData.gameField[7]), getField(oGameData.gameField[8]), "\n");
+        let result = oGameData.checkForGameOver();
+        switch (result) {
+            case NO_WINNER:
+                console.log("Game in progress...");
+                break;
+            case X_WINNER:
+                console.log("X won the game!");
+                break;
+            case O_WINNER:
+                console.log("O won the game!");
+                break;
+            case DRAW:
+                console.log("Game ended with a DRAW");
+                break;
+        }
     }
 }
+
+randomizedTest();
