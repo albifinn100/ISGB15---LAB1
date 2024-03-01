@@ -97,12 +97,21 @@ oGameData.checkForGameOver = function () {
     }
     //TODO: Colin
     let checkDiagonal = function () {
-        if (this.gameField[0] == "X" && this.gameField[4] == "X" && this.gameField[9] == "X") {
+        // Backslash Diagonal
+        if (oGameData.gameField[0] == "X" && oGameData.gameField[5] == "X" && oGameData.gameField[9] == "X") {
             return X_WINNER;
         }
-        if (this.gameField[0] == "O" && this.gameField[4] == "O" && this.gameField[9] == "O") {
+        if (oGameData.gameField[0] == "O" && oGameData.gameField[5] == "O" && oGameData.gameField[9] == "O") {
             return O_WINNER;
         }
+        // Forwardslash Diagonal
+        if (oGameData.gameField[3] == "X" && oGameData.gameField[5] == "X" && oGameData.gameField[7] == "X") {
+            return X_WINNER;
+        }
+        if (oGameData.gameField[3] == "O" && oGameData.gameField[5] == "O" && oGameData.gameField[7] == "O") {
+            return O_WINNER;
+        }
+        // No diagonal result
         return NO_WINNER;
     }
 
@@ -114,7 +123,23 @@ oGameData.checkForGameOver = function () {
         }
     });
 
-    return 0;
+    // Check for draw
+    let isGameDrawn = function () {
+        let isDraw = true;
+        for (field in oGameData.gameField) {
+            if (field === "") {
+                isDraw = false;
+                break;
+            }
+        };
+        return isDraw;
+    };
+    if (isGameDrawn) {
+        return DRAW;
+    }
+
+    // There are still empty fields with no winner.
+    return NO_WINNER;
 
 }
 
