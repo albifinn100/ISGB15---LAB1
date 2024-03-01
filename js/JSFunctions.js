@@ -162,17 +162,15 @@ oGameData.checkForGameOver = function () {
     });
 
     // Check for draw
-    let isGameDrawn = function () {
-        let isDraw = true;
-        for (field in oGameData.gameField) {
-            if (field === "") {
-                isDraw = false;
-                break;
+    function isGameDrawn() {
+        for (let field of oGameData.gameField) {
+            if (field === '') {
+                return false;
             }
         };
-        return isDraw;
+        return true;
     };
-    if (isGameDrawn) {
+    if (isGameDrawn()) {
         return DRAW;
     }
 
@@ -181,5 +179,12 @@ oGameData.checkForGameOver = function () {
 }
 
 
+oGameData.gameField = ['X', 'O', '', '', '', '', '', '', ''];
+console.log(oGameData);
+console.log(oGameData.checkForGameOver());
 
-
+function randomizedTest() {
+    for (let i = 0; i < 100; i++) {
+        // TODO
+    }
+}
