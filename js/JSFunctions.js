@@ -82,6 +82,11 @@ oGameData.initGlobalObject = function () {
  * Funktionen tar inte emot några värden.
  */
 oGameData.checkForGameOver = function () {
+    const NO_WINNER = 0;
+    const X_WINNER = 1;
+    const O_WINNER = 2;
+    const DRAW = 3;
+
     //TODO: Albin
     let checkHorizontal = function () {
 
@@ -90,20 +95,27 @@ oGameData.checkForGameOver = function () {
     let checkVertical = function () {
 
     }
-    //TODO: Collin
+    //TODO: Colin
     let checkDiagonal = function () {
-
+        if (this.gameField[0] == "X" && this.gameField[4] == "X" && this.gameField[9] == "X") {
+            return X_WINNER;
+        }
+        if (this.gameField[0] == "O" && this.gameField[4] == "O" && this.gameField[9] == "O") {
+            return O_WINNER;
+        }
+        return NO_WINNER;
     }
-   
-    let checkArr = [checkHorizontal,checkVertical,checkDiagonal];
-    checkArr.forEach(function (checkFunc){
+
+    let checkArr = [checkHorizontal, checkVertical, checkDiagonal];
+    checkArr.forEach(function (checkFunc) {
         let result = checkFunc();
-        if(result!==0){
+        if (result !== 0) {
             return result;
         }
     });
+
     return 0;
-       
+
 }
 
 
