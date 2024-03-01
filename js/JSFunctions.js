@@ -123,13 +123,13 @@ oGameData.checkForGameOver = function () {
         if (oGameData.gameField[0] === "X" && oGameData.gameField[3] === "X" && oGameData.gameField[6] === "X"
             || oGameData.gameField[1] === "X" && oGameData.gameField[4] === "X" && oGameData.gameField[7] === "X"
             || oGameData.gameField[2] === "X" && oGameData.gameField[5] === "X" && oGameData.gameField[8] === "X") {
-            console.log(oGameData.gameField);
+            return X_WINNER;
         }
 
         if (oGameData.gameField[0] === "O" && oGameData.gameField[3] === "O" && oGameData.gameField[6] === "O"
             || oGameData.gameField[1] === "O" && oGameData.gameField[4] === "O" && oGameData.gameField[7] === "O"
             || oGameData.gameField[2] === "O" && oGameData.gameField[5] === "O" && oGameData.gameField[8] === "O") {
-            console.log(oGameData.gameField);
+            return O_WINNER;
         }
 
     }
