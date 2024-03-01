@@ -222,10 +222,19 @@ oGameData.checkForGameOver = function () {
     }
 
     // Check for draw
+<<<<<<< HEAD
     function isGameDrawn() {
         for (let field of oGameData.gameField) {
             if (field === M_NO) {
                 return false;
+=======
+    let isGameDrawn = function () {
+        let isDraw = true;
+        for (let field in oGameData.gameField) {
+            if (field === "") {
+                isDraw = false;
+                break;
+>>>>>>> 200082f (Merge)
             }
         };
         return true;
