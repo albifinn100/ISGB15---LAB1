@@ -32,11 +32,11 @@ let oGameData = {};
  * Funktionen tar inte emot några värden.
  * Funktionen returnerar inte något värde.
  */
-oGameData.initGlobalObject = function() {
+oGameData.initGlobalObject = function () {
 
     //Datastruktur för vilka platser som är lediga respektive har brickor
-    oGameData.gameField = Array('', '', '', '', '', '', '', '', '');
-    
+    oGameData.gameField = new Array('', '', '', '', '', '', '', '', '');
+
     /* Testdata för att testa rättningslösning */
     //oGameData.gameField = Array('X', 'X', 'X', '', '', '', '', '', '');
     //oGameData.gameField = Array('X', '', '', 'X', '', '', 'X', '', '');
@@ -81,10 +81,30 @@ oGameData.initGlobalObject = function() {
  * returnerar 3 om det är oavgjort.
  * Funktionen tar inte emot några värden.
  */
-oGameData.checkForGameOver = function() {
+oGameData.checkForGameOver = function () {
+    //TODO: Albin
+    let checkHorizontal = function () {
 
+    }
+    //TODO: Oskar 
+    let checkVertical = function () {
+
+    }
+    //TODO: Collin
+    let checkDiagonal = function () {
+
+    }
    
-
+    let checkArr = [checkHorizontal,checkVertical,checkDiagonal];
+    checkArr.forEach(function (checkFunc){
+        let result = checkFunc();
+        if(result!==0){
+            return result;
+        }
+    });
+    return 0;
+       
 }
+
 
 
