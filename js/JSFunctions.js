@@ -90,9 +90,32 @@ oGameData.checkForGameOver = function () {
 
     //TODO: Albin
     let checkHorizontal = function () {
+        //Check 1st row
         if (oGameData.gameField[0] == "X" && oGameData.gameField[1] == "X" && oGameData.gameField[2] == "X") {
-            return
+            return X_WINNER;
         }
+        if (oGameData.gameField[0] == "O" && oGameData.gameField[1] == "O" && oGameData.gameField[2] == "O") {
+            return O_WINNER;
+        }
+
+        //Check 2nd row
+        if (oGameData.gameField[3] == "X" && oGameData.gameField[4] == "X" && oGameData.gameField[5] == "X") {
+            return X_WINNER;
+        }
+        if (oGameData.gameField[3] == "O" && oGameData.gameField[4] == "O" && oGameData.gameField[5] == "O") {
+            return O_WINNER;
+        }
+
+        //Check 3rd row
+        if (oGameData.gameField[6] == "X" && oGameData.gameField[7] == "X" && oGameData.gameField[8] == "X") {
+            return X_WINNER;
+        }
+        if (oGameData.gameField[6] == "O" && oGameData.gameField[7] == "O" && oGameData.gameField[8] == "O") {
+            return O_WINNER;
+        }   
+        // No horizontal result
+        return NO_WINNER;
+
 
     }
     //TODO: Oskar 
