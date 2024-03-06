@@ -214,7 +214,6 @@ oGameData.checkForGameOver = function () {
     }
 
     let checkArr = [checkHorizontal, checkVertical, checkDiagonal];
-<<<<<<< HEAD
     for (let i = 0; i < checkArr.length; i++) {
         let result = checkArr[i]();
         if (result !== NO_WINNER) {
