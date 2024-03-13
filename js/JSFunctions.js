@@ -208,9 +208,10 @@ function initiateGame() {
 
   //Reset table cells
   let tdRef = document.querySelectorAll("td");
-  for (let i = 0; i < tdRef.length; i++) {
-    tdRef[i].textContent = "";
-    tdRef[i].style.backgroundColor = "WHITE";
+  for(let td of tdRef)
+  {
+    td.textContent = "";
+    td.style.backgroundColor = "WHITE";
   }
 
   //Set starting player
@@ -227,5 +228,6 @@ function initiateGame() {
     oGameData.currentPlayer = oGameData.playerTwo;
   }
 
+  //Show current player in h1
   document.querySelector("div.jumbotron>h1").textContent = "Aktuell spelare är: " + oGameData.currentPlayer + " (" + playerName + ")";
 }
