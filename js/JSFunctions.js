@@ -1,25 +1,12 @@
 "use strict";
 
-
-
-
-//Testutskrifter
-/*
-console.log( oGameData );
-oGameData.initGlobalObject();
-console.log( oGameData.gameField );
-console.log( oGameData.checkForGameOver() );
-*/
-
-/*
-console.log( oGameData.checkHorizontal() );
-console.log( oGameData.checkVertical() );
-console.log( oGameData.checkDiagonalLeftToRight() );
-console.log( oGameData.checkDiagonalRightToLeft() );
-console.log( oGameData.checkForDraw() );
-*/
-
-
+window.addEventListener("load", function (e) {
+    oGameData.initGlobalObject();
+    document.querySelector("#game-area").classList.add("d-none");
+    document.querySelector("#newGame").addEventListener("click", function (e) {
+        validateForm();
+    });
+});
 
 /**
  * Globalt objekt som innehåller de attribut som ni skall använda.
@@ -40,13 +27,6 @@ oGameData.initGlobalObject = function () {
 
     //Datastruktur för vilka platser som är lediga respektive har brickor
     oGameData.gameField = new Array(M_NO, M_NO, M_NO, M_NO, M_NO, M_NO, M_NO, M_NO, M_NO);
-
-    /* Testdata för att testa rättningslösning */
-    //oGameData.gameField = Array(M_P1, M_P1, M_P1, M_NO, M_NO, M_NO, M_NO, M_NO, M_NO);
-    //oGameData.gameField = Array(M_P1, M_NO, M_NO, M_P1, M_NO, M_NO, M_P1, M_NO, M_NO);
-    //oGameData.gameField = Array(M_P1, M_NO, M_NO, M_NO, M_P1, M_NO, M_NO, M_NO, M_P1);
-    //oGameData.gameField = Array(M_NO, M_NO, M_P1, M_NO, M_P1, M_NO, M_P1, M_NO, M_NO);
-    //oGameData.gameField = Array(M_P1, M_P2, M_P1, '0', M_P1, M_P2, M_P2, M_P1, M_P2);
 
     //Indikerar tecknet som skall användas för spelare ett.
     oGameData.playerOne = M_P1;
@@ -77,6 +57,78 @@ oGameData.initGlobalObject = function () {
 
 }
 
+function validateForm() {
+
+    function throwError(msg) {
+        document.querySelector("#errorMsg").textContent = msg;
+        throw new Error(msg);
+    }
+
+    const NAME_MAX_LENGTH = 5;
+    const BLACK = "#000000";
+    const WHITE = "#ffffff";
+
+    try {
+        // Namn
+        let player_names = document.querySelectorAll("input[placeholder='nickname']");
+        for (let name of player_names) {
+            if (name.value.length < NAME_MAX_LENGTH) {
+                throwError("A player name is too short!");
+            }
+        }
+        // Färger
+        let player_colors = [
+            document.querySelector("#color1").value,
+            document.querySelector("#color2").value,
+        ];
+        for (let color of player_colors) {
+            if (color == WHITE || color == BLACK) {
+                throwError("A player has an invalid color!");
+            }
+        }
+        if (player_colors[0] == player_colors[1]) {
+            throwError("Both players have the same color!");
+        }
+    } catch (e) {
+        console.log(e);
+        return;
+    }
+
+    initiateGame();
+}
+
+function initiateGame() {
+    document.querySelector("form").classList.add("d-none");
+    document.querySelector("#game-area").classList.remove("d-none");
+    document.querySelector("#errorMsg").textContent = "";
+
+    oGameData.nickNamePlayerOne = document.querySelector("#nick1").value;
+    oGameData.nickNamePlayerTwo = document.querySelector("#nick2").value;
+
+    oGameData.colorPlayerOne = document.querySelector("#color1").value;
+    oGameData.colorPlayerTwo = document.querySelector("#color2").value;
+
+    document.querySelectorAll("td").forEach((field) => {
+        field.textContent = "";
+        field.style.backgroundColor = "white";
+    });
+
+    let playerChar, playerName;
+
+    let r = Math.random();
+    console.log(r);
+
+    if (r < 0.5) {
+        oGameData.currentPlayer = playerChar = oGameData.playerOne;
+        playerName = oGameData.nickNamePlayerOne;
+    } else {
+        oGameData.currentPlayer = playerChar = oGameData.playerTwo;
+        playerName = oGameData.nickNamePlayerTwo;
+    }
+
+    document.querySelector(".jumbotron h1").textContent = "Aktuell spelare är " + playerName;
+}
+
 /**
  * Kontrollerar för tre i rad.
  * Returnerar 0 om det inte är någon vinnare, 
@@ -86,13 +138,13 @@ oGameData.initGlobalObject = function () {
  * Funktionen tar inte emot några värden.
  */
 
-const NO_WINNER = 0;
-const X_WINNER = 1;
-const O_WINNER = 2;
-const DRAW = 3;
-
 oGameData.checkForGameOver = function () {
-    //TODO: Albin
+
+    const NO_WINNER = 0;
+    const X_WINNER = 1;
+    const O_WINNER = 2;
+    const DRAW = 3;
+
     let checkHorizontal = function () {
         //Check 1st row
         if (oGameData.gameField[0] == M_P1 && oGameData.gameField[1] == M_P1 && oGameData.gameField[2] == M_P1) {
@@ -119,17 +171,14 @@ oGameData.checkForGameOver = function () {
         }
         // No horizontal result
         return NO_WINNER;
-
-
     }
-    //TODO: Oskar 
+
     let checkVertical = function () {
         if (oGameData.gameField[0] === M_P1 && oGameData.gameField[3] === M_P1 && oGameData.gameField[6] === M_P1
             || oGameData.gameField[1] === M_P1 && oGameData.gameField[4] === M_P1 && oGameData.gameField[7] === M_P1
             || oGameData.gameField[2] === M_P1 && oGameData.gameField[5] === M_P1 && oGameData.gameField[8] === M_P1) {
             return X_WINNER;
         }
-
         if (oGameData.gameField[0] === M_P2 && oGameData.gameField[3] === M_P2 && oGameData.gameField[6] === M_P2
             || oGameData.gameField[1] === M_P2 && oGameData.gameField[4] === M_P2 && oGameData.gameField[7] === M_P2
             || oGameData.gameField[2] === M_P2 && oGameData.gameField[5] === M_P2 && oGameData.gameField[8] === M_P2) {
@@ -137,7 +186,7 @@ oGameData.checkForGameOver = function () {
         }
         return NO_WINNER;
     }
-    //TODO: Colin
+
     let checkDiagonal = function () {
         // Backslash Diagonal
         if (oGameData.gameField[0] == M_P1 && oGameData.gameField[4] == M_P1 && oGameData.gameField[8] == M_P1) {
@@ -157,10 +206,9 @@ oGameData.checkForGameOver = function () {
         return NO_WINNER;
     }
 
-    let result;
     let checkArr = [checkHorizontal, checkVertical, checkDiagonal];
     for (let i = 0; i < checkArr.length; i++) {
-        result = checkArr[i]();
+        let result = checkArr[i]();
         if (result !== NO_WINNER) {
             return result;
         }
@@ -179,40 +227,37 @@ oGameData.checkForGameOver = function () {
         return DRAW;
     }
 
-    // There are still empty fields with no winner.
+    // There are still empty fields and no winner.
     return NO_WINNER;
 }
 
-// Manual Test
-/*
-oGameData.gameField = [
-    M_P1, M_P2, M_NO,
-    M_NO, M_P1, M_NO,
-    M_NO, M_P2, M_P1];
-*/
-// console.log(oGameData.gameField);
-// console.log(oGameData.checkForGameOver());
-
-oGameData.initGlobalObject();
-
 // Randomized Test
-function randomizedTest() {
+function randomizedTest(amount) {
+    if (!Number.isInteger(amount) || amount < 1) {
+        amount = 1;
+    }
+
     let possibleFields = [M_NO, M_P1, M_P2];
-    for (let i = 0; i < 10; i++) {
+
+    for (let i = 0; i < amount; i++) {
+
         for (let i = 0; i < oGameData.gameField.length; i++) {
             let setField = Math.floor(Math.random() * possibleFields.length);
             oGameData.gameField[i] = possibleFields[setField];
         };
+
         function getField(field) {
             if (field == "") {
                 return "_";
             }
             return field;
         }
+
         console.log("",
             getField(oGameData.gameField[0]), getField(oGameData.gameField[1]), getField(oGameData.gameField[2]), "\n",
             getField(oGameData.gameField[3]), getField(oGameData.gameField[4]), getField(oGameData.gameField[5]), "\n",
             getField(oGameData.gameField[6]), getField(oGameData.gameField[7]), getField(oGameData.gameField[8]), "\n");
+
         let result = oGameData.checkForGameOver();
         switch (result) {
             case NO_WINNER:
@@ -230,5 +275,3 @@ function randomizedTest() {
         }
     }
 }
-
-// randomizedTest();
