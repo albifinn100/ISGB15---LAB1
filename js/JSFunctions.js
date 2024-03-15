@@ -1,8 +1,10 @@
 "use strict";
-
+//Körs när sidan laddats
 window.addEventListener("load", function (e) {
     oGameData.initGlobalObject();
+    //Lägger till d-none klassen till objektet med id't game-area
     document.querySelector("#game-area").classList.add("d-none");
+    //Lägger till en eventlistener till objektet med id't newGame
     document.querySelector("#newGame").addEventListener("click", function (e) {
         validateForm();
     });
@@ -58,18 +60,18 @@ oGameData.initGlobalObject = function () {
 }
 
 function validateForm() {
-
+    //Skriver ut fel som görs.
     function throwError(msg) {
         document.querySelector("#errorMsg").textContent = msg;
         throw new Error(msg);
     }
-
+    //Konstanter för längd av namn och svart och vit
     const NAME_MAX_LENGTH = 5;
     const BLACK = "#000000";
     const WHITE = "#ffffff";
 
     try {
-        // Namn
+        // Kollar namnen på spelarna och om de är längre än 4
         let player_names = document.querySelectorAll("input[placeholder='nickname']");
         for (let name of player_names) {
             if (name.value.length < NAME_MAX_LENGTH) {
@@ -79,7 +81,7 @@ function validateForm() {
         if (player_names[0].value == player_names[1].value) {
             throwError("Both players can not have the same name!");
         }
-        // Färger
+        // Kollar vilka färger och om de är svart eller vit
         let player_colors = [
             document.querySelector("#color1").value,
             document.querySelector("#color2").value,
@@ -100,6 +102,8 @@ function validateForm() {
     initiateGame();
 }
 
+//Gömmer där man väljer nickname och färg och startar spelet och det gör spelbortet synligt igen och visar vem som spelar.
+//Det sätter även färgen på spelaren till den som den har valt.
 function initiateGame() {
     document.querySelector("form").classList.add("d-none");
     document.querySelector("#game-area").classList.remove("d-none");
@@ -117,7 +121,7 @@ function initiateGame() {
     });
 
     let playerChar, playerName;
-
+    //Slumpar vilken spelare som ska börja.
     let r = Math.random();
     console.log(r);
 
