@@ -76,6 +76,9 @@ function validateForm() {
                 throwError("A player name is too short!");
             }
         }
+        if (player_names[0].value == player_names[1].value) {
+            throwError("Both players can not have the same name!");
+        }
         // Färger
         let player_colors = [
             document.querySelector("#color1").value,
