@@ -1,48 +1,38 @@
 "use strict";
-
-
-
-
-//Testutskrifter
-/*
-console.log( oGameData );
-oGameData.initGlobalObject();
-console.log( oGameData.gameField );
-console.log( oGameData.checkForGameOver() );
-*/
-
-/*
-console.log( oGameData.checkHorizontal() );
-console.log( oGameData.checkVertical() );
-console.log( oGameData.checkDiagonalLeftToRight() );
-console.log( oGameData.checkDiagonalRightToLeft() );
-console.log( oGameData.checkForDraw() );
-*/
-
-
-
-/**
- * Globalt objekt som innehåller de attribut som ni skall använda.
- * Initieras genom anrop till funktionern initGlobalObject().
- */
 let oGameData = {};
+const REF_TABLE = document.querySelector("table");
+const REF_H1 = document.querySelector("div.jumbotron>h1");
+const REF_TDS = document.querySelectorAll("td");
+const REF_STARTBTN = document.querySelector("#newGame");
+const REF_ERRORMSG = document.querySelector("#errorMsg");
+const REF_FORM = document.querySelector("form");
+const REF_GAMEAREA = document.querySelector("#game-area");
+const REF_NICK1 = document.querySelector("#nick1");
+const REF_NICK2 = document.querySelector("#nick2");
+const REF_COLOR1 = document.querySelector("#color1");
+const REF_COLOR2 = document.querySelector("#color1");
+const BLACK = "#000000";
+const WHITE = "#ffffff";
+const IN_PROGRESS = 0;
+const WIN_X = 1;
+const WIN_O = 2;
+const DRAW = 3;
+const NAME_MAXLENGTH = 5;
 
-/**
- * Initerar det globala objektet med de attribut som ni skall använda er av.
- * Funktionen tar inte emot några värden.
- * Funktionen returnerar inte något värde.
- */
+window.addEventListener("load", () => {
+  oGameData.initGlobalObject();
+  //Hides game area
+  REF_GAMEAREA.classList.add("d-none");
+
+  //Set function to btn onclick event
+  REF_STARTBTN.addEventListener("click", validateForm);
+});
+
+
 oGameData.initGlobalObject = function () {
 
   //Datastruktur för vilka platser som är lediga respektive har brickor
   oGameData.gameField = Array('', '', '', '', '', '', '', '', '');
-
-  /* Testdata för att testa rättningslösning */
-  //oGameData.gameField = Array('X', 'X', 'X', '', '', '', '', '', '');
-  //oGameData.gameField = Array('X', '', '', 'X', '', '', 'X', '', '');
-  //oGameData.gameField = Array('X', '', '', '', 'X', '', '', '', 'X');
-  //oGameData.gameField = Array('', '', 'X', '', 'X', '', 'X', '', '');
-  //oGameData.gameField = Array('X', 'O', 'X', '0', 'X', 'O', 'O', 'X', 'O');
 
   //Indikerar tecknet som skall användas för spelare ett.
   oGameData.playerOne = "X";
@@ -72,22 +62,12 @@ oGameData.initGlobalObject = function () {
   oGameData.timerId = null;
 
 }
-document.onload = oGameData.initGlobalObject();
-/**
- * Kontrollerar för tre i rad.
- * Returnerar 0 om det inte är någon vinnare, 
- * returnerar 1 om spelaren med ett kryss (X) är vinnare,
- * returnerar 2 om spelaren med en cirkel (O) är vinnare eller
- * returnerar 3 om det är oavgjort.
- * Funktionen tar inte emot några värden.
- */
+
+
 oGameData.checkForGameOver = function () {
   let p1Win = false;
   let p2Win = false;
-  const inProgress = 0;
-  const xWin = 1;
-  const oWin = 2;
-  const draw = 3;
+
   let player = [oGameData.playerOne, oGameData.playerTwo];
 
   function checkFieldFull() {
@@ -142,41 +122,23 @@ oGameData.checkForGameOver = function () {
   for (let i = 0; i < 3; i++) {
     checks[i];
   }
-  if (p1Win && !p2Win) return xWin;
-  else if (!p1Win && p2Win) return oWin;
-  else if (checkFieldFull()) return draw;
-  return inProgress;
+  if (p1Win && !p2Win) return WIN_X;
+  else if (!p1Win && p2Win) return WIN_O;
+  else if (checkFieldFull()) return DRAW;
+  return IN_PROGRESS;
 
 
 }
-////////////////////////////
-//Test-game
-oGameData.gameField = Array(
-  'X', '', 'O',
-  'X', 'O', 'O',
-  'O', '', 'O');
-let result = oGameData.checkForGameOver();
-console.log(result);
-///////////////////////////
-
-//Hides game area
-document.querySelector("#game-area").classList.add("d-none");
-
-//Set function to btn onclick event
-document.querySelector("#newGame").onclick = validateForm;
 
 
 function validateForm() {
-  const BLACK = "#000000";
-  const WHITE = "#ffffff";
-
   try {
     //Check if user inputs are correct
-    let name1 = document.querySelector("#nick1").value;
-    let name2 = document.querySelector("#nick2").value;
-    let color1 = document.querySelector("#color1").value;
-    let color2 = document.querySelector("#color2").value;
-    if (name1.length < 5 || name2.length < 5) { throw ("Name too short"); }
+    let name1 = REF_NICK1.value;
+    let name2 = REF_NICK2.value;
+    let color1 = REF_COLOR1.value;
+    let color2 = REF_COLOR2.value;
+    if (name1.length < NAME_MAXLENGTH || name2.length < NAME_MAXLENGTH) { throw ("Name too short"); }
     if (name1 === name2) { throw ("Same names"); }
     if (color1 === BLACK || color1 === WHITE) { throw ("Player 1: Invaild color"); }
     if (color2 === BLACK || color2 === WHITE) { throw ("Player 2: Invaild color"); }
@@ -187,29 +149,27 @@ function validateForm() {
 
   }
   catch (error) {
-    document.querySelector("#errorMsg").textContent = error;
+    REF_ERRORMSG.textContent = error;
   }
 }
 
 
 function initiateGame() {
   //Hide form and error msg, show game area
-  document.querySelector("form").classList.add("d-none");
-  document.querySelector("#game-area").classList.remove("d-none");
-  document.querySelector("#errorMsg").textContent = "";
+  REF_FORM.classList.add("d-none");
+  REF_GAMEAREA.classList.remove("d-none");
+  REF_ERRORMSG.textContent = "";
 
   //Player 1
-  oGameData.nickNamePlayerOne = document.querySelector("#nick1").value;
-  oGameData.colorPlayerOne = document.querySelector("#color1").value;
+  oGameData.nickNamePlayerOne = REF_NICK1.value;
+  oGameData.colorPlayerOne = REF_COLOR1.value;
 
   //Player 2
-  oGameData.nickNamePlayerTwo = document.querySelector("#nick2").value;
-  oGameData.colorPlayerTwo = document.querySelector("#color2").value;
+  oGameData.nickNamePlayerTwo = REF_NICK2.value;
+  oGameData.colorPlayerTwo = document.REF_COLOR2.value;
 
   //Reset table cells
-  let tdRef = document.querySelectorAll("td");
-  for(let td of tdRef)
-  {
+  for (let td of REF_TDS) {
     td.textContent = "";
     td.style.backgroundColor = "WHITE";
   }
@@ -228,6 +188,70 @@ function initiateGame() {
     oGameData.currentPlayer = oGameData.playerTwo;
   }
 
-  //Show current player in h1
-  document.querySelector("div.jumbotron>h1").textContent = "Aktuell spelare är: " + oGameData.currentPlayer + " (" + playerName + ")";
+  REF_TABLE.addEventListener("click", executeMove);
 }
+
+
+//Runs when a move is executed by the current player
+//Fills table-cell with current players symbol and color if not occupied
+//Runs gameOverProtocol if win or draw
+function executeMove(event) {
+  let targetCell = event.target;
+  let targetId = targetCell.getAttribute("data-id");
+
+  if (oGameData.gameField[targetId] === "") {
+    oGameData.gameField[targetId] = oGameData.currentPlayer;
+    targetCell.textContent = oGameData.currentPlayer;
+
+    if (oGameData.currentPlayer === oGameData.playerOne) {
+      targetCell.style.backgroundColor = oGameData.colorPlayerOne;
+      setCurrentPlayer(oGameData.playerTwo)
+    }
+    else {
+      targetCell.style.backgroundColor = oGameData.colorPlayerTwo;
+      setCurrentPlayer(oGameData.playerOne);
+    }
+    if (oGameData.checkForGameOver() == !IN_PROGRESS) {
+      gameOverProtocol();
+    }
+  }
+}
+
+//Sets current player in GameData
+//Also updates h1
+function setCurrentPlayer(player) {
+  oGameData.currentPlayer = player;
+  REF_H1.textContent = "Aktuell spelare är: " + oGameData.currentPlayer + " (" + playerName + ")";
+}
+
+
+//Runs if game is over
+//Turns of game and hides gameField
+//Shows gameresult in h1
+//Resets GameData
+function gameOverProtocol() {
+  REF_TABLE.removeEventListener("click", executeMove);
+  REF_FORM.classList.remove("d-none");
+  let winnerName, winnerMark;
+  let winnerText = "Vinnare är: " + winnerName + " (" + winnerMark + ")" + " Spela igen?";
+
+  if (oGameData.checkForGameOver() === DRAW) REF_H1.textContent = "Oavgjort";
+  else {
+    switch (oGameData.checkForGameOver()) {
+      case WIN_X:
+        winnerName = oGameData.nickNamePlayerOne;
+        winnerMark = oGameData.playerOne;
+        break;
+      case WIN_O:
+        winnerName = oGameData.nickNamePlayerTwo;
+        winnerMark = oGameData.playerTwo;
+        break;
+    }
+    REF_H1.textContent = winnerText;
+  }
+
+  REF_GAMEAREA.classList.add("d-none");
+  oGameData.initGlobalObject();
+}
+
+
