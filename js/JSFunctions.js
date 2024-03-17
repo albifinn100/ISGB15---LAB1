@@ -1,10 +1,10 @@
 "use strict";
-//Körs när sidan laddats
+//Run onload
 window.addEventListener("load", function (e) {
     oGameData.initGlobalObject();
-    //Lägger till d-none klassen till objektet med id't game-area
+    //Hides #game-area
     document.querySelector("#game-area").classList.add("d-none");
-    //Lägger till en eventlistener till objektet med id't newGame
+    //Adds click-listener to #newGame
     document.querySelector("#newGame").addEventListener("click", function (e) {
         validateForm();
     });
@@ -58,20 +58,22 @@ oGameData.initGlobalObject = function () {
     oGameData.timerId = null;
 
 }
-
+//Check if form-inputs are vaild
 function validateForm() {
-    //Skriver ut fel som görs.
+    //Error-function for try-catch-block
+    //Displays error-text in #errorMsg
     function throwError(msg) {
         document.querySelector("#errorMsg").textContent = msg;
         throw new Error(msg);
     }
-    //Konstanter för längd av namn och svart och vit
+    //Constants
     const NAME_MAX_LENGTH = 5;
     const BLACK = "#000000";
     const WHITE = "#ffffff";
 
     try {
-        // Kollar namnen på spelarna och om de är längre än 4
+        // Check name-length for both players
+        // Check if names are same
         let player_names = document.querySelectorAll("input[placeholder='nickname']");
         for (let name of player_names) {
             if (name.value.length < NAME_MAX_LENGTH) {
@@ -81,7 +83,9 @@ function validateForm() {
         if (player_names[0].value == player_names[1].value) {
             throwError("Both players can not have the same name!");
         }
-        // Kollar vilka färger och om de är svart eller vit
+
+        // Check color for both players
+        // Error if: both colors are the same or color is black or white
         let player_colors = [
             document.querySelector("#color1").value,
             document.querySelector("#color2").value,
@@ -98,32 +102,36 @@ function validateForm() {
         console.log(e);
         return;
     }
-
+    //Initiate game if no errors caught
     initiateGame();
 }
 
-//Gömmer där man väljer nickname och färg och startar spelet och det gör spelbortet synligt igen och visar vem som spelar.
-//Det sätter även färgen på spelaren till den som den har valt.
+
 function initiateGame() {
+    //Hides form
+    //Displays game-area
+    //Empites errormsg text
     document.querySelector("form").classList.add("d-none");
     document.querySelector("#game-area").classList.remove("d-none");
     document.querySelector("#errorMsg").textContent = "";
 
+    //Read player-names
     oGameData.nickNamePlayerOne = document.querySelector("#nick1").value;
     oGameData.nickNamePlayerTwo = document.querySelector("#nick2").value;
 
+    //Read player-colors
     oGameData.colorPlayerOne = document.querySelector("#color1").value;
     oGameData.colorPlayerTwo = document.querySelector("#color2").value;
 
+    //Reset all table-cells in game-area
     document.querySelectorAll("td").forEach((field) => {
         field.textContent = "";
         field.style.backgroundColor = "white";
     });
 
-    let playerChar, playerName;
-    //Slumpar vilken spelare som ska börja.
+    //Choose starting player randomly
     let r = Math.random();
-    console.log(r);
+    let playerChar, playerName;
 
     if (r < 0.5) {
         oGameData.currentPlayer = playerChar = oGameData.playerOne;
@@ -133,6 +141,7 @@ function initiateGame() {
         playerName = oGameData.nickNamePlayerTwo;
     }
 
+    //Display current player in h1
     document.querySelector(".jumbotron h1").textContent = "Aktuell spelare är " + playerName;
 }
 
@@ -282,8 +291,3 @@ function randomizedTest(amount) {
         }
     }
 }
-<<<<<<< HEAD
-=======
-
-//randomizedTest();
->>>>>>> bed6874 (files)
