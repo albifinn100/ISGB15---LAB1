@@ -61,7 +61,7 @@ oGameData.initGlobalObject = function () {
 //Check if form-inputs are vaild
 function validateForm() {
     //Error-function for try-catch-block
-    //Displays error-text in #errorMsg
+    //Also displays error-text in #errorMsg
     function throwError(msg) {
         document.querySelector("#errorMsg").textContent = msg;
         throw new Error(msg);
