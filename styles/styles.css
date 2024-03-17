@@ -7,7 +7,11 @@ body{
   font-size: 1rem;
 }
 td{
-  border:1px solid black;   
+  border:1px solid black;
+  text-align: center;
+  width: 125px;
+  height:125px;
+  font-size: 50px;
 }
 table{
   width:50%;
@@ -315,8 +319,10 @@ body{
       border: 1px solid silver;
       border-radius: 0.25rem;
       width: 100%;
-      padding: 0.5rem;
       outline: none;
+  }
+  #div-in-form input[type="text"]{
+      padding: 0.5rem;
   }
   #div-in-form input[type="text"]:focus{
       border-color: dodgerblue;
