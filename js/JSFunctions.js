@@ -307,11 +307,11 @@ function executeMove(clk) {
 
     const jumb = document.querySelector(".jumbotron>h1");
     const ruta = clk.target; 
+    console.log(ruta.textContent);
     const rutNummer = ruta.getAttribute("data-id");
     
-    if(oGameData.gameField === M_NO)
+    if(ruta.textContent === M_P1 || ruta.textContent === M_P2)
         return;
-
 
         oGameData.gameField[rutNummer] = oGameData.currentPlayer;
         ruta.textContent = oGameData.currentPlayer;
@@ -325,7 +325,9 @@ function executeMove(clk) {
             ruta.style.backgroundColor = oGameData.colorPlayerTwo;
         }
 
-    if(oGameData.checkForGameOver() == NO_WINNER)
+    let res = oGameData.checkForGameOver();
+
+    if(res == NO_WINNER)
     {
         if(oGameData.currentPlayer === M_P1)
             oGameData.currentPlayer = M_P2;
@@ -346,7 +348,6 @@ function executeMove(clk) {
         document.querySelector("#game-area table").removeEventListener("click", executeMove);
         document.querySelector("form").classList.remove("d-none");
         document.querySelector("#game-area").classList.add("d-none");
-        let res = oGameData.checkForGameOver();
         if(res == X_WINNER)
             jumb.textContent ="Winner is: " + oGameData.nickNamePlayerOne + "! Spela igen?";
         else if(res == O_WINNER)
@@ -354,5 +355,5 @@ function executeMove(clk) {
         else if(res == DRAW)
             jumb.textContent ="Winner is: " + "Oavgjort" + "! Spela igen?";
         oGameData.initGlobalObject();
-
+    
 }
