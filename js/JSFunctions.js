@@ -133,7 +133,7 @@ function initiateGame() {
         playerName = oGameData.nickNamePlayerTwo;
     }
 
-    document.querySelector(".jumbotron h1").textContent = "Aktuell spelare är " + playerName;
+    document.querySelector(".jumbotron>h1").textContent = "Current player is: " + playerName;
 
     document.querySelector("#game-area table").addEventListener("click", executeMove);
 
@@ -144,6 +144,7 @@ function executeMove(clk) {
     if(clk !== "TD")
         return;
 
+    const jumb = document.querySelector(".jumbotron>h1");
     const ruta = clk.target; 
     const rutNummer = ruta.getAttribute("data-id");
 
@@ -253,7 +254,23 @@ function executeMove(clk) {
             break;
     }
 
+    if(oGameData.checkForGameOver() == NO_WINNER)
+    {
+        if(oGameData.currentPlayer === M_P1)
+            oGameData.currentPlayer = M_P2;
+        else if(oGameData.currentPlayer === M_P2)
+            oGameData.currentPlayer = M_P1;
 
+        let playerNickname
+        if(oGameData.currentPlayer === M_P1)
+            playerNickname = nickNamePlayerOne;
+        else if(oGameData.currentPlayer === M_P2)
+            playerNickname = nickNamePlayerTwo;
+
+        jumb.textContent ="Current player is: " + playerNickname + "!";
+    }
+
+    
 
     document.querySelector("#game-area table").removeEventListener("click", executeMove);
     document.querySelector("form").classList.remove("d-none");
