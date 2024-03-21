@@ -134,7 +134,131 @@ function initiateGame() {
     }
 
     document.querySelector(".jumbotron h1").textContent = "Aktuell spelare är " + playerName;
+
+    document.querySelector("#game-area table").addEventListener("click", executeMove);
+
 }
+
+function executeMove(clk) {
+
+    if(clk !== "TD")
+        return;
+
+    const ruta = clk.target; 
+    const rutNummer = ruta.getAttribute("data-id");
+
+
+    if(oGameData.gameField !== M_NO)
+        return;
+
+        switch(rutNummer)
+    {
+        case '0':
+            oGameData.gameField[rutNummer] = oGameData.currentPlayer;
+            ruta.textContent = oGameData.currentPlayer;
+
+            if(oGameData.currentPlayer === M_P1)
+                ruta.style.backgroundColor = oGameData.colorPlayerOne;
+            else if(oGameData.currentPlayer === M_P2)
+                ruta.style.backgroundColor = oGameData.colorPlayerTwo;
+            
+            break;
+
+        case '1':
+            oGameData.gameField[rutNummer] = oGameData.currentPlayer;
+
+            ruta.textContent = oGameData.currentPlayer;
+            
+            if(oGameData.currentPlayer === M_P1)
+                ruta.style.backgroundColor = oGameData.colorPlayerOne;
+            else if(oGameData.currentPlayer === M_P2)
+                ruta.style.backgroundColor = oGameData.colorPlayerTwo;
+            break;
+
+        case '2':
+            oGameData.gameField[rutNummer] = oGameData.currentPlayer;
+
+            ruta.textContent = oGameData.currentPlayer;
+            
+            if(oGameData.currentPlayer === M_P1)
+                ruta.style.backgroundColor = oGameData.colorPlayerOne;
+            else if(oGameData.currentPlayer === M_P2)
+                ruta.style.backgroundColor = oGameData.colorPlayerTwo;
+            break;
+            
+        case '3':
+            oGameData.gameField[rutNummer] = oGameData.currentPlayer;
+
+            ruta.textContent = oGameData.currentPlayer;
+            
+            if(oGameData.currentPlayer === M_P1)
+                ruta.style.backgroundColor = oGameData.colorPlayerOne;
+            else if(oGameData.currentPlayer === M_P2)
+                ruta.style.backgroundColor = oGameData.colorPlayerTwo;
+            break;
+
+        case '4':
+            oGameData.gameField[rutNummer] = oGameData.currentPlayer;
+
+            ruta.textContent = oGameData.currentPlayer;
+            
+            if(oGameData.currentPlayer === M_P1)
+                ruta.style.backgroundColor = oGameData.colorPlayerOne;
+            else if(oGameData.currentPlayer === M_P2)
+                ruta.style.backgroundColor = oGameData.colorPlayerTwo;
+            break;
+
+        case '5':
+            oGameData.gameField[rutNummer] = oGameData.currentPlayer;
+
+            ruta.textContent = oGameData.currentPlayer;
+            
+            if(oGameData.currentPlayer === M_P1)
+                ruta.style.backgroundColor = oGameData.colorPlayerOne;
+            else if(oGameData.currentPlayer === M_P2)
+                ruta.style.backgroundColor = oGameData.colorPlayerTwo;
+            break;
+
+        case '6':
+            oGameData.gameField[rutNummer] = oGameData.currentPlayer;
+
+            ruta.textContent = oGameData.currentPlayer;
+            
+            if(oGameData.currentPlayer === M_P1)
+                ruta.style.backgroundColor = oGameData.colorPlayerOne;
+            else if(oGameData.currentPlayer === M_P2)
+                ruta.style.backgroundColor = oGameData.colorPlayerTwo;
+            break;
+
+        case '7':
+            oGameData.gameField[rutNummer] = oGameData.currentPlayer;
+
+            ruta.textContent = oGameData.currentPlayer;
+            
+            if(oGameData.currentPlayer === M_P1)
+                ruta.style.backgroundColor = oGameData.colorPlayerOne;
+            else if(oGameData.currentPlayer === M_P2)
+                ruta.style.backgroundColor = oGameData.colorPlayerTwo;
+            break;
+
+        case '8':
+            oGameData.gameField[rutNummer] = oGameData.currentPlayer;
+
+            ruta.textContent = oGameData.currentPlayer;
+            
+            if(oGameData.currentPlayer === M_P1)
+                ruta.style.backgroundColor = oGameData.colorPlayerOne;
+            else if(oGameData.currentPlayer === M_P2)
+                ruta.style.backgroundColor = oGameData.colorPlayerTwo;
+            break;
+    }
+
+
+
+    document.querySelector("#game-area table").removeEventListener("click", executeMove);
+    document.querySelector("form").classList.remove("d-none");
+}
+
 
 /**
  * Kontrollerar för tre i rad.
