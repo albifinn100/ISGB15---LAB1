@@ -1,12 +1,10 @@
 "use strict";
 
-//Run onload
-window.addEventListener("load", function (e) {
+// När sidan har laddats.
+window.addEventListener("load", (e) => {
     oGameData.initGlobalObject();
-    //Hides #game-area
     document.querySelector("#game-area").classList.add("d-none");
-    //Adds click-listener to #newGame
-    document.querySelector("#newGame").addEventListener("click", function (e) {
+    document.querySelector("#newGame").addEventListener("click", (e) => {
         validateForm();
     });
 });
@@ -68,49 +66,48 @@ oGameData.initGlobalObject = function () {
  * Om något av kraven inte är uppfyllda så avbryts funktionen, och texten i jumbotron headern uppdateras för att reflektera problemet.
  */
 function validateForm() {
-    //Error-function for try-catch-block
-    //Also displays error-text in #errorMsg
-    function throwError(msg) {
-        document.querySelector("#errorMsg").textContent = msg;
-        throw new Error(msg);
+
+    // Inkapslad hjälparfunktion för att skriva ut felmeddelandet.
+    function throwError(message) {
+        document.querySelector("#errorMsg").textContent = message;
+        throw new Error(message);
     }
-    //Constants
+
     const NAME_MIN_LENGTH = 5;
-    const BLACK = "#000000";
-    const WHITE = "#ffffff";
+    const COLOR_BLACK = "#000000";
+    const COLOR_WHITE = "#ffffff";
 
     try {
-        // Check name-length for both players
-        // Check if names are same
+        // Bekräfta att namnen är tillräkligt långa, och inte är samma.
         const player_names = document.querySelectorAll("input[placeholder='nickname']");
         for (const name of player_names) {
             if (name.value.length < NAME_MIN_LENGTH) {
-                throwError("A player name is too short!");
+                throwError("En spelare har för kort namn!");
             }
         }
         if (player_names[0].value == player_names[1].value) {
-            throwError("Both players can not have the same name!");
+            throwError("Båda spelare får inte ha samma namn!");
         }
 
-        // Check color for both players
-        // Error if: both colors are the same or color is black or white
+        // Bekräfta att färgerna är olika och inte är vit eller svart.
         const player_colors = [
             document.querySelector("#color1").value,
             document.querySelector("#color2").value,
         ];
         for (const color of player_colors) {
-            if (color == WHITE || color == BLACK) {
-                throwError("A player has an invalid color!");
+            if (color == COLOR_WHITE || color == COLOR_BLACK) {
+                throwError("En spelare har en ogiltig färg!");
             }
         }
         if (player_colors[0] == player_colors[1]) {
-            throwError("Both players have the same color!");
+            throwError("Båda spelare får inte ha samma färg!");
         }
     } catch (e) {
         console.log(e);
         return;
     }
-    //Initiate game if no errors caught
+
+    // Alla krav är uppfyllda. Initiera spelet.
     initiateGame();
 }
 
@@ -120,22 +117,20 @@ function validateForm() {
  * Det sätter även färgen på spelaren till den som den har valt.
  */
 function initiateGame() {
-    //Hides form
-    //Displays game-area
-    //Empites errormsg text
+    // Göm formuläret och visa spelplanen.
     document.querySelector("form").classList.add("d-none");
     document.querySelector("#game-area").classList.remove("d-none");
     document.querySelector("#errorMsg").textContent = "";
 
-    //Read player-names
+    // Lagra spelarnamnen.
     oGameData.nickNamePlayerOne = document.querySelector("#nick1").value;
     oGameData.nickNamePlayerTwo = document.querySelector("#nick2").value;
 
-    //Read player-colors
+    // Lagra spelarfärgerna.
     oGameData.colorPlayerOne = document.querySelector("#color1").value;
     oGameData.colorPlayerTwo = document.querySelector("#color2").value;
 
-    //Reset all table-cells in game-area
+    // Återställ alla fält.
     document.querySelectorAll("td").forEach((field) => {
         field.textContent = "";
         field.style.backgroundColor = "white";
@@ -143,7 +138,7 @@ function initiateGame() {
 
     let playerChar, playerName;
 
-    //Choose starting player randomly
+    // Slumpmässigt välj vem som får första turen.
     if (Math.random() < 0.5) {
         oGameData.currentPlayer = playerChar = oGameData.playerOne;
         playerName = oGameData.nickNamePlayerOne;
@@ -152,10 +147,10 @@ function initiateGame() {
         playerName = oGameData.nickNamePlayerTwo;
     }
 
-    //Display current player in h1
+    // Visa nuvarande spelare i h1 headern.
     document.querySelector(".jumbotron h1").textContent = "Aktuell spelare är " + playerName + " (" + oGameData.currentPlayer + ")";
 
-    // Tabell
+    // Lägg till klicklyssnare på hela tabellen.
     document.querySelector("#game-area table").addEventListener("click", executeMove);
 }
 
@@ -233,7 +228,7 @@ const GAMERESULT_DRAW = 3;
 oGameData.checkForGameOver = function () {
 
     const checkHorizontal = function () {
-        //Check 1st row
+        // Första raden
         if (oGameData.gameField[0] == M_P1 && oGameData.gameField[1] == M_P1 && oGameData.gameField[2] == M_P1) {
             return GAMERESULT_X_WON;
         }
@@ -241,7 +236,7 @@ oGameData.checkForGameOver = function () {
             return GAMERESULT_O_WON;
         }
 
-        //Check 2nd row
+        // Andra raden
         if (oGameData.gameField[3] == M_P1 && oGameData.gameField[4] == M_P1 && oGameData.gameField[5] == M_P1) {
             return GAMERESULT_X_WON;
         }
@@ -249,14 +244,14 @@ oGameData.checkForGameOver = function () {
             return GAMERESULT_O_WON;
         }
 
-        //Check 3rd row
+        // Tredje raden
         if (oGameData.gameField[6] == M_P1 && oGameData.gameField[7] == M_P1 && oGameData.gameField[8] == M_P1) {
             return GAMERESULT_X_WON;
         }
         if (oGameData.gameField[6] == M_P2 && oGameData.gameField[7] == M_P2 && oGameData.gameField[8] == M_P2) {
             return GAMERESULT_O_WON;
         }
-        // No horizontal result
+        // Ingen horisontell vinst.
         return GAMERESULT_NONE;
     }
 
@@ -275,33 +270,33 @@ oGameData.checkForGameOver = function () {
     }
 
     const checkDiagonal = function () {
-        // Backslash Diagonal
+        // Omvänt snedsträck
         if (oGameData.gameField[0] == M_P1 && oGameData.gameField[4] == M_P1 && oGameData.gameField[8] == M_P1) {
             return GAMERESULT_X_WON;
         }
         if (oGameData.gameField[0] == M_P2 && oGameData.gameField[4] == M_P2 && oGameData.gameField[8] == M_P2) {
             return GAMERESULT_O_WON;
         }
-        // Forwardslash Diagonal
+        // Snedsträck
         if (oGameData.gameField[2] == M_P1 && oGameData.gameField[4] == M_P1 && oGameData.gameField[6] == M_P1) {
             return GAMERESULT_X_WON;
         }
         if (oGameData.gameField[2] == M_P2 && oGameData.gameField[4] == M_P2 && oGameData.gameField[6] == M_P2) {
             return GAMERESULT_O_WON;
         }
-        // No diagonal result
+        // Ingen diagonal vinst.
         return GAMERESULT_NONE;
     }
 
     const checkArr = [checkHorizontal, checkVertical, checkDiagonal];
-    for (let i = 0; i < checkArr.length; i++) {
-        const result = checkArr[i]();
+    for (const checkFunction of checkArr) {
+        const result = checkFunction();
         if (result !== GAMERESULT_NONE) {
             return result;
         }
     }
 
-    // Check for draw
+    // Titta igenom alla fält. Om minst ett fortfarande är tomt så håller spelet fortfarande på.
     function isGameDrawn() {
         for (const field of oGameData.gameField) {
             if (field === M_NO) {
@@ -314,7 +309,6 @@ oGameData.checkForGameOver = function () {
         return GAMERESULT_DRAW;
     }
 
-    // There are still empty fields and no winner.
     return GAMERESULT_NONE;
 }
 
@@ -322,6 +316,8 @@ oGameData.checkForGameOver = function () {
  * Testar {@link oGameData.checkForGameOver} genom att sätta varje ruta till ett
  * slumpmässigt giltigt värde, och skriver ut resultatet till konsollen.
  * Slutar med att återställa alla rutor till de tidigare värdena.
+ * 
+ * Kalla direkt i webbläsarkonsolen.
  * @param {number} amount Antal tester.
  */
 function randomizedTest(amount) {
