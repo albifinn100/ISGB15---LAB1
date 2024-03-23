@@ -1,12 +1,43 @@
 "use strict";
 
+const TIMER_CHECKBOX_ID = "timer-checkbox";
+const TURN_TIME_LIMIT = 5000;
+
 // När sidan har laddats.
 window.addEventListener("load", (e) => {
     oGameData.initGlobalObject();
     document.querySelector("#game-area").classList.add("d-none");
-    document.querySelector("#newGame").addEventListener("click", (e) => {
+    const startButton = document.querySelector("#newGame");
+    startButton.addEventListener("click", (e) => {
         validateForm();
+        // Förhindra att lägga till # i websidolänken, uppskrollning, etc.
+        e.preventDefault();
     });
+
+    // Lägg till de timerrelaterade elementen.
+    const buttonParent = startButton.parentElement;
+
+    // Skapa en div som läggs före startknappen.
+    const timerDiv = document.createElement("div");
+    {
+        // Skapa checkboxen.
+        const timerCheckbox = document.createElement("input");
+        {
+            timerCheckbox.setAttribute("type", "checkbox");
+            timerCheckbox.setAttribute("id", TIMER_CHECKBOX_ID);
+            timerCheckbox.style.width = "auto";
+        }
+        timerDiv.appendChild(timerCheckbox);
+
+        // Skapa checkboxtexten.
+        const timerLabel = document.createElement("label");
+        {
+            timerLabel.setAttribute("for", TIMER_CHECKBOX_ID);
+            timerLabel.appendChild(document.createTextNode("Vill du begränsa tiden till 5 sekunder per drag?"));
+        }
+        timerDiv.appendChild(timerLabel);
+    }
+    buttonParent.insertBefore(timerDiv, startButton);
 });
 
 /**
@@ -152,6 +183,29 @@ function initiateGame() {
 
     // Lägg till klicklyssnare på hela tabellen.
     document.querySelector("#game-area table").addEventListener("click", executeMove);
+
+    // Hantera tidsbegränsningen.
+    const timerCheckbox = document.querySelector("#" + TIMER_CHECKBOX_ID);
+    oGameData.timerEnabled = timerCheckbox.checked;
+    if (timerCheckbox.checked) {
+        console.log("Tidbegränsning aktiverad!");
+        oGameData.timerId = setTimeout(swapPlayerTurn, TURN_TIME_LIMIT);
+    }
+}
+
+function swapPlayerTurn() {
+    // Avsluta den tidigare timeouten, om den fanns
+    clearTimeout(oGameData.timerId);
+
+    // Byt tur.
+    oGameData.currentPlayer = oGameData.currentPlayer == M_P1 ? oGameData.playerTwo : oGameData.playerOne
+    const playerName = oGameData.currentPlayer == M_P1 ? oGameData.nickNamePlayerOne : oGameData.nickNamePlayerTwo;
+    document.querySelector(".jumbotron h1").textContent = "Aktuell spelare är " + playerName + " (" + oGameData.currentPlayer + ")";
+
+    // Starta en ny timeout om det var aktiverat.
+    if (oGameData.timerEnabled) {
+        oGameData.timerId = setTimeout(swapPlayerTurn, TURN_TIME_LIMIT);
+    }
 }
 
 /**
@@ -182,13 +236,12 @@ function executeMove(pointerEvent) {
     const gameResult = oGameData.checkForGameOver();
     if (gameResult == GAMERESULT_NONE) {
         // Ändra så att det är den andra spelarens tur.
-        oGameData.currentPlayer = oGameData.currentPlayer == M_P1 ? oGameData.playerTwo : oGameData.playerOne
-        const playerName = oGameData.currentPlayer == M_P1 ? oGameData.nickNamePlayerOne : oGameData.nickNamePlayerTwo;
-        jumbotronHeader.textContent = "Aktuell spelare är " + playerName + " (" + oGameData.currentPlayer + ")";
+        swapPlayerTurn();
         return;
     }
 
     // Avsluta spel och uppdatera headertexten.
+    clearTimeout(oGameData.timerId);
     document.querySelector("#game-area table").removeEventListener("click", executeMove);
     document.querySelector("form").classList.remove("d-none");
 

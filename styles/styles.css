@@ -1,444 +1,183 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
-*{
+
+* {
     box-sizing: border-box;
 }
-body{
-  font-family: "Roboto", sans-serif;
-  font-size: 1rem;
-}
-td{
-  border:1px solid black;
-  text-align: center;
-  width: 125px;
-  height:125px;
-  font-size: 50px;
-}
-table{
-  width:50%;
-  aspect-ratio: 1/1;
-  border:1px solid black;
-  border-collapse: collapse;
-}
-html{
-    font-size:16px;
-}
-body{
-    font-family: "Roboto", sans-serif;
-    font-size:1rem;
+
+.d-none {
+    display: none;
 }
 
-@media (min-width: 1180px) {
-    body{
-        display: flex;
-        flex-wrap: wrap;
-    }
-    main{
-        width: 70%;
-    }
-    .jumbotron{
-        background-color: #DEDEDE;
-        padding: 10px;
-        
-    }
-    .text-center{
-        margin: auto;
-    }
-    .text-center>h1,p {
-        text-align: center;
-        font-weight: 100;
-        font-size: 1.5rem;
-    }
-    #errorMsg{
-        font-size: 1rem;
-    }
-    aside{
-        width: 300px;
-        height: auto;
-    }
-    #div-in-form{
-        border: solid 1px black;
-        border-radius: 5px;
-        box-shadow: 0px 5px 10px 5px lightgray;
-        display: flex;
-        flex-wrap: wrap;
-        width: 100%;
-        padding: 20px;
-        padding-left: 10px;
-        padding-right: 0;
-        margin-top: 25px;
-    }
-    html{
-        font-size: 22px;
-    }
-    .col{
-        width: 49%;
-        padding-top: 5px;
-        padding-bottom: 5px;
-        margin-right: 1%;
-    }
-    input{
-        width: 100%;
-    }
-    input[type="color"]{
-        background-color: white;
-    }
-    label{
-        display: block;
-    }
-    #div-with-a{
-        border: 2px solid deepskyblue;
-        border-radius: 5px;
-        padding: 5px;
-        margin-top: 10px;
-    }
-    #div-with-a:hover{
-        box-shadow: skyblue 0px 0px 3px 3px;
-    }
-    #div-with-a>a{
-        text-decoration: none;
-        color: deepskyblue;
-    }
-    aside>a>img{
-        width: 100%;
-    }
-    .gameArea>table{
-        margin-top: 40px;
-        margin-left: 200px;
-    }
+html {
+    font-size: 16px;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-@media (max-width:415px)
-{
-  html{
-      font-size:16px;
-  }
-  body{
-    display:flex;
-    align-items: center;
+body {
+    font-family: Roboto;
+    font-size: 1rem;
+    display: flex;
     justify-content: center;
-  }
-  aside{
-    display:none;
-  }
-  .jumbotron{
-    background-color:  #DEDEDE;
-    padding:1.5rem;
+}
+
+body>* {
+    width: 100%;
+}
+
+/*==========
+| TOP CARD |
+==========*/
+
+.jumbotron {
+    background-color: #DEDEDE;
+    padding: 1.5rem;
     border-radius: 0.3rem;
     margin: 0;
     margin-bottom: 1rem;
-    
-  }
-  .text-center{
+}
+
+.text-center {
     text-align: center;
-  }
-  form{
-    box-shadow: 10px 10px 20px rgba(0,0,0,0.125);
-    padding:1rem;
-    border-radius: 0.5rem;
-    border: solid 1px silver;
-    margin-bottom:1rem; 
-  }
-  form>div>.col{
-    display:flex;
-    flex-direction: column;
-  }
-  input[type="text"]
-  {
-    height: 2rem;
-    margin-bottom: 0.5rem;
-    border: 1px solid silver;
-    border-radius: 0.25rem;
-  }
-  input[type="text"]:focus{
-   
-    outline: none;
-    border-color: dodgerblue;
-    box-shadow: 0 0 0 3px dodgerblue;
-   
-  }
-  input[type="color"]{
-    width:100%;
-    background-color: white;
-    margin-bottom: 0.5rem;
-    border: 1px solid silver;
-    border-radius: 0.25rem;
-  }
-  #div-with-a{
-    display:flex;
-    justify-content: flex-end;
+}
+
+/*======
+| FORM |
+======*/
+
+form {
+    border: 2px solid lightgray;
+    border-radius: 0.3rem;
+    padding: 1rem;
+    box-shadow: 1rem 1rem 20px 2px rgb(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+#div-in-form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+#div-in-form>div {
     margin-top: 1rem;
-  }
-  #div-with-a > a{
-    background-color: dodgerblue;
-    color:white;
-    text-decoration: none;
-    border-radius: 0.5rem;
-    height: 2rem;
-    width: 35%;
-    text-align: center;
-    font-weight: bold;
+}
+
+.col {
+    width: 100%;
+}
+
+#div-with-a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    width: 100%;
+}
+
+form input[type="text"],
+form input[type="color"] {
+    width: 100%;
+    border: 2px solid lightgray;
+    border-radius: 0.3rem;
     padding: 0.5rem;
+    font-size: inherit;
+}
 
-  }
-  table{
+form input[type="color"] {
+    background-color: white;
+    height: 2.7rem;
+}
+
+form input[type="text"]:focus {
+    box-shadow: 0 0 2px 2px dodgerblue;
+    outline: none;
+}
+
+form #newGame {
+    background-color: dodgerblue;
+    padding: 0.5rem;
+    color: white;
+    font-weight: bold;
+    border: 2px solid dodgerblue;
+    border-radius: 0.5rem;
+    text-decoration: none;
+}
+
+/*=======
+| TABLE |
+=======*/
+
+table {
+    margin: auto;
     border-spacing: 0;
-    width:100%;
-    
-  }
-  td{
+    border-collapse: collapse;
+}
+
+td {
     width: 125px;
-    height:125px;
+    height: 125px;
     font-size: 50px;
+    border: 1px solid darkgray;
     text-align: center;
-  }
 }
 
-@media (min-width: 414px) and (max-width: 1181px){
-  html{
-      font-size: 18px;
-  }
-  body{
-      display: flex;
-      justify-content: center;
-      height: 100vh;
-  }
-  main{
-      width: 50%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-  }
-  .text-center{
-      text-align: center;
-  }
-  aside{
-      border: 1px solid black;
-      display: block;
-      width: 30%;
-      height: 300px;
-      margin-left: 0.5rem;
-  }
-  aside>a>img{
-      width: 100%;
-      height: 100%;
-  }
-  .jumbotron{
-      width: 100%;
-      background-color: #DEDEDE;
-      padding: 1.5rem;
-      border-radius: 0.3rem;
-      margin: 0;
-      margin-bottom: 1rem;
-  }
-  /* form */
-  form{
-      border-radius: 0.3rem;
-      padding: 1rem;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      box-shadow: 10px 10px 20px rgba(0,0,0,0.125);
-  }
-  #div-in-form{
-      width: 100%;
-  }
-  #div-in-form div.col{
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-  }
-  #div-in-form input{
-      border: 1px solid silver;
-      border-radius: 0.25rem;
-      width: 100%;
-      outline: none;
-  }
-  #div-in-form input[type="text"]{
-      padding: 0.5rem;
-  }
-  #div-in-form input[type="text"]:focus{
-      border-color: dodgerblue;
-      outline: none;
-      box-shadow: 0 0 0 3px dodgerblue;
-  }
-  #div-in-form input[type="color"]{
-      background-color: white;
-  }
-  #div-with-a{
-      display:flex;
-      justify-content: flex-end;
-      margin-top: 1rem;
-  }
-  #div-with-a > a{
-      background-color: dodgerblue;
-      color:white;
-      text-decoration: none;
-      border-radius: 0.5rem;
-      height: 2rem;
-      text-align: center;
-      font-weight: bold;
-      padding: 0.5rem;
-  }
-  /* game area */
-  div.gameArea{
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-  }
-  table{
-      width: 100%;
-      aspect-ratio: 1/1;
-      border:1px solid black;
-      border-collapse: collapse;
-      margin: 0.5rem;
-  }
-  div.gameArea>table td{
-      border: 1px solid black;
-      width: 125px;
-      height: 125px;
-  }
+img {
+    width: 100%;
 }
 
-@media (min-width: 1180px) {
-  body{
-      display: flex;
-      flex-wrap: wrap;
-  }
-  main{
-      width: 70%;
-  }
-  .jumbotron{
-      background-color: #DEDEDE;
-      padding: 10px;
-  }
-  .text-center{
-      margin: auto;
-  }
-  .text-center>h1 {
-      text-align: center;
-      font-weight: bold;
-      font-size: 1.5rem;
-  }
-  .text-center>p{
-    font-weight: 400;
-  }
-  #errorMsg{
-      font-size: 1rem;
-  }
-  aside{
-      width: 300px;
-      height: auto;
-  }
-  #div-in-form{
-      border: solid 1px black;
-      border-radius: 5px;
-      box-shadow: 0px 5px 10px 5px lightgray;
-      display: flex;
-      flex-wrap: wrap;
-      width: 100%;
-      padding: 20px;
-      margin-top: 25px;
-  }
-  html{
-      font-size: 22px;
-  }
-  .col{
-      width: 49%;
-      padding-top: 5px;
-      padding-bottom: 5px;
-  }
-  input{
-      width: 80%;
-  }
-  input[type="color"]{
-      background-color: white;
-  }
-  label{
-      display: block;
-  }
-  #div-with-a{
-      border: 2px solid deepskyblue;
-      border-radius: 5px;
-      padding: 5px;
-      margin-top: 10px;
-  }
-  #div-with-a>a{
-      text-decoration: none;
-      color: deepskyblue;
-  }
-  aside>a>img{
-      width: 100%;
-  }
-  .gameArea>table{
-      margin-top: 40px;
-      margin-left: 200px;
-  }
+/*================
+| RESPONSIVENESS |
+================*/
+
+@media screen and (max-width: 414px) {
+    aside {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 415px) and (max-width: 1181px) {
+    html {
+        font-size: 18px;
+    }
+
+    main {
+        width: 50%;
+    }
+
+    aside {
+        width: 30%;
+    }
+
+    /* Samma som för liten skärm. Varför äns sätta? */
+    td {
+        width: 125px;
+        height: 125px;
+    }
+}
+
+@media screen and (min-width: 1182px) {
+    html {
+        font-size: 22px;
+    }
+
+    main {
+        width: 70%;
+    }
+
+    aside {
+        width: 300px;
+    }
+
+    #newGame:hover {
+        border: 2px solid dodgerblue;
+        color: dodgerblue;
+        background-color: white;
+    }
+
+    td {
+        width: 200px;
+        height: 200px;
+    }
+
+    .col {
+        width: 49%;
+    }
 }
