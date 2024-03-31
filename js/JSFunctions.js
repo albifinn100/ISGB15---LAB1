@@ -1,16 +1,16 @@
 "use strict";
-const oGameData = {};
-const REF_TABLE = document.querySelector("table");
-const REF_H1 = document.querySelector("div.jumbotron>h1");
-const REF_TDS = document.querySelectorAll("td");
-const REF_STARTBTN = document.querySelector("#newGame");
-const REF_ERRORMSG = document.querySelector("#errorMsg");
-const REF_FORM = document.querySelector("form");
-const REF_GAMEAREA = document.querySelector("#game-area");
-const REF_NICK1 = document.querySelector("#nick1");
-const REF_NICK2 = document.querySelector("#nick2");
-const REF_COLOR1 = document.querySelector("#color1");
-const REF_COLOR2 = document.querySelector("#color2");
+let oGameData = {};
+let REF_TABLE = document.querySelector("table");
+let REF_H1 = document.querySelector("div.jumbotron>h1");
+let REF_TDS = document.querySelectorAll("td");
+let REF_STARTBTN = document.querySelector("#newGame");
+let REF_ERRORMSG = document.querySelector("#errorMsg");
+let REF_FORM = document.querySelector("form");
+let REF_GAMEAREA = document.querySelector("#game-area");
+let REF_NICK1 = document.querySelector("#nick1");
+let REF_NICK2 = document.querySelector("#nick2");
+let REF_COLOR1 = document.querySelector("#color1");
+let REF_COLOR2 = document.querySelector("#color2");
 const BLACK = "#000000";
 const WHITE = "#ffffff";
 const IN_PROGRESS = 0;
@@ -21,6 +21,7 @@ const NAME_MAXLENGTH = 5;
 
 window.addEventListener("load", () => {
   oGameData.initGlobalObject();
+  createCheckbox();
   //Hides game area
   REF_GAMEAREA.classList.add("d-none");
 
@@ -138,14 +139,17 @@ function validateForm() {
     let name2 = REF_NICK2.value;
     let color1 = REF_COLOR1.value;
     let color2 = REF_COLOR2.value;
+    let checkbox = document.querySelector("#timer-checkbox");
+    oGameData.timerEnabled=checkbox.checked;
     if (name1.length < NAME_MAXLENGTH || name2.length < NAME_MAXLENGTH) { throw ("Name too short"); }
     if (name1 === name2) { throw ("Same names"); }
     if (color1 === BLACK || color1 === WHITE) { throw ("Player 1: Invaild color"); }
     if (color2 === BLACK || color2 === WHITE) { throw ("Player 2: Invaild color"); }
     if (color1 === color2) { throw ("Same color"); }
+    if (oGameData.timerEnabled) {setupTimer();}
 
     //Start game if no errors
-    
+
     initiateGame();
 
   }
@@ -157,7 +161,7 @@ function validateForm() {
 
 
 function initiateGame() {
-  
+
   //Hide form and error msg, show game area
   REF_FORM.classList.add("d-none");
   REF_GAMEAREA.classList.remove("d-none");
@@ -190,7 +194,7 @@ function initiateGame() {
     playerName = oGameData.nickNamePlayerTwo;
     oGameData.currentPlayer = oGameData.playerTwo;
   }
-
+  setCurrentPlayer(playerChar, playerName)
   REF_TABLE.addEventListener("click", executeMove);
 }
 
@@ -199,13 +203,14 @@ function initiateGame() {
 //Fills table-cell with current players symbol and color if not occupied
 //Runs gameOverProtocol if win or draw
 function executeMove(event) {
+  
   let targetCell = event.target;
   let targetId = targetCell.getAttribute("data-id");
 
   if (oGameData.gameField[targetId] === "") {
     oGameData.gameField[targetId] = oGameData.currentPlayer;
     targetCell.textContent = oGameData.currentPlayer;
-
+    currentTime=0;
     if (oGameData.currentPlayer === oGameData.playerOne) {
       targetCell.style.backgroundColor = oGameData.colorPlayerOne;
       setCurrentPlayer(oGameData.playerTwo, oGameData.nickNamePlayerTwo)
@@ -214,7 +219,7 @@ function executeMove(event) {
       targetCell.style.backgroundColor = oGameData.colorPlayerTwo;
       setCurrentPlayer(oGameData.playerOne, oGameData.nickNamePlayerOne);
     }
-    if (oGameData.checkForGameOver() !==IN_PROGRESS) {
+    if (oGameData.checkForGameOver() !== IN_PROGRESS) {
       gameOverProtocol();
     }
   }
@@ -226,7 +231,6 @@ function setCurrentPlayer(player, playerName) {
   oGameData.currentPlayer = player;
   REF_H1.textContent = "Aktuell spelare är: " + oGameData.currentPlayer + " (" + playerName + ")";
 }
-
 
 //Runs if game is over
 //Turns of game and hides gameField
@@ -248,11 +252,64 @@ function gameOverProtocol() {
         winnerMark = oGameData.playerTwo;
         break;
     }
-    REF_H1.textContent = "Vinnare är: " + winnerName + " (" + winnerMark + ")" + " Spela igen?";
+    REF_H1.textContent = "Vinnare är: " + winnerName + " (" + winnerMark + ") Spela igen?";
   }
-
   REF_GAMEAREA.classList.add("d-none");
+  window.clearInterval(oGameData.timerId);
   oGameData.initGlobalObject();
+  document.querySelector("main").removeChild(timeContainer);
 }
+
+//Implement turn timer that switches current player after x seconds
+//Make a div with text showing the current timer time 
+//Append div to beneath the game-area
+let currentTime;
+let timerText;
+let timeContainer
+function setupTimer() {
+  oGameData.timerId = window.setInterval(updateTime, 100);
+  currentTime = 0;
+  timeContainer = document.createElement("div");
+  timeContainer.setAttribute("style","margin-inline: auto; font-size: 30px");
+  timerText = document.createTextNode("");
+  timeContainer.appendChild(timerText);
+
+  document.querySelector("main").appendChild(timeContainer);
+}
+
+//Update timer function
+function updateTime() {
+  if (currentTime/10 >= 5) {
+    if (oGameData.currentPlayer == oGameData.playerOne) { setCurrentPlayer(oGameData.playerTwo, oGameData.nickNamePlayerTwo); }
+    else { setCurrentPlayer(oGameData.playerOne, oGameData.nickNamePlayerOne); }
+    currentTime = 0;
+  }
+  currentTime += 1;
+  let displayedTime = (currentTime/10).toFixed(1);
+  timerText.nodeValue="Turn time: " + displayedTime;
+  console.log("update");
+}
+
+function createCheckbox(){
+  //Checkbox
+  let timerCheckbox = document.createElement("input");
+  timerCheckbox.type="checkbox";
+  timerCheckbox.setAttribute("style", "width: fit-content; margin-right: auto; margin-left: 10px;");
+  timerCheckbox.setAttribute("id","timer-checkbox");
+
+  //Label for checkbox
+  let timerCheckboxLabel = document.createElement("label");
+  timerCheckboxLabel.setAttribute("for","timer-checkbox");
+  timerCheckboxLabel.setAttribute("style","width: fit-content;");
+  let labelText = document.createTextNode("Vill du begränsa tiden till 5 sekunder per drag?")
+  timerCheckboxLabel.appendChild(labelText);
+
+  //Append to div with button
+  let btnContainer = document.querySelector("#div-with-a");
+  btnContainer.insertBefore(timerCheckbox,btnContainer.children[0]);
+  btnContainer.insertBefore(timerCheckboxLabel,btnContainer.children[0]);
+}
+
+
 
 
