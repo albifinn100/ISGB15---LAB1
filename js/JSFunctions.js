@@ -353,7 +353,7 @@ function executeMove(clk) {
     console.log("nope");
     const rutNummer = ruta.getAttribute("data-id");
 
-    if (ruta.textContent === M_P1 || ruta.textContent === M_P2)
+    if (oGameData.gameField[rutNummer] === M_P1 || oGameData.gameField[rutNummer] === M_P2)
         return;
 
     oGameData.gameField[rutNummer] = oGameData.currentPlayer;
