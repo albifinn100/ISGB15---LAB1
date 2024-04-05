@@ -1,14 +1,48 @@
 "use strict";
+const TID = "thisTimer";
 //Körs när sidan laddats
 window.addEventListener("load", function (e) {
     oGameData.initGlobalObject();
     //Lägger till d-none klassen till objektet med id't game-area
+    const start = document.querySelector("#newGame");
     document.querySelector("#game-area").classList.add("d-none");
     //Lägger till en eventlistener till objektet med id't newGame
-    document.querySelector("#newGame").addEventListener("click", function (e) {
+    start.addEventListener("click", function (e) {
         validateForm();
     });
+
+
+
+
+
+    const startB = start.parentElement;
+
+    const Tdiv = document.createElement("div");
+    {
+        const timer = document.createElement("input");
+        {
+            timer.setAttribute("type", "checkbox");
+            timer.setAttribute("id", TID);
+            timer.style.width = "auto";
+        }
+
+
+        Tdiv.appendChild(timer);
+
+        const timertext = document.createElement("label");
+        {
+            timertext.setAttribute("for", TID);
+            timertext.appendChild(document.createTextNode("5 sek timer jaho!"));
+
+        }
+
+        Tdiv.appendChild(timertext);
+    }
+
+    startB.insertBefore(Tdiv, start);
+
 });
+
 
 /**
  * Globalt objekt som innehåller de attribut som ni skall använda.
@@ -136,6 +170,15 @@ function initiateGame() {
     document.querySelector(".jumbotron>h1").textContent = "Current player is: " + playerName;
 
     document.querySelector("#game-area table").addEventListener("click", executeMove);
+
+    let timer = document.querySelector("#thisTimer");
+    oGameData.timerEnabled = timer.checked;
+
+    if (timer.checked) {
+        oGameData.timerId = setTimeout(byt, 5000);
+        console.log("logged");
+    }
+
 
 }
 
@@ -302,58 +345,70 @@ function executeMove(clk) {
     const DRAW = 3;
 
 
-    if(clk.target.nodeName !== "TD")
+    if (clk.target.nodeName !== "TD")
         return;
 
     const jumb = document.querySelector(".jumbotron>h1");
-    const ruta = clk.target; 
-    console.log(ruta.textContent);
+    const ruta = clk.target;
+    console.log("nope");
     const rutNummer = ruta.getAttribute("data-id");
-    
-    if(ruta.textContent === M_P1 || ruta.textContent === M_P2)
+
+    if (ruta.textContent === M_P1 || ruta.textContent === M_P2)
         return;
 
-        oGameData.gameField[rutNummer] = oGameData.currentPlayer;
-        ruta.textContent = oGameData.currentPlayer;
+    oGameData.gameField[rutNummer] = oGameData.currentPlayer;
+    ruta.textContent = oGameData.currentPlayer;
 
-        if(oGameData.currentPlayer === M_P1)
-        {
-            ruta.style.backgroundColor = oGameData.colorPlayerOne;
-        }
-        else if(oGameData.currentPlayer === M_P2)
-        {
-            ruta.style.backgroundColor = oGameData.colorPlayerTwo;
-        }
+    if (oGameData.currentPlayer === M_P1) {
+        ruta.style.backgroundColor = oGameData.colorPlayerOne;
+    }
+    else if (oGameData.currentPlayer === M_P2) {
+        ruta.style.backgroundColor = oGameData.colorPlayerTwo;
+    }
 
     let res = oGameData.checkForGameOver();
 
-    if(res == NO_WINNER)
-    {
-        if(oGameData.currentPlayer === M_P1)
-            oGameData.currentPlayer = M_P2;
-        else if(oGameData.currentPlayer === M_P2)
-            oGameData.currentPlayer = M_P1;
-
-        let playerNickname
-        if(oGameData.currentPlayer === M_P1)
-            playerNickname = oGameData.nickNamePlayerOne;
-        else if(oGameData.currentPlayer === M_P2)
-            playerNickname = oGameData.nickNamePlayerTwo;
-
-        jumb.textContent ="Current player is: " + playerNickname + "!";
+    if (res == NO_WINNER) {
+        byt();
+        console.log("nopebyt")
         return;
 
     }
+    clearTimeout(oGameData.timerId);
+    document.querySelector("#game-area table").removeEventListener("click", executeMove);
+    document.querySelector("form").classList.remove("d-none");
+    document.querySelector("#game-area").classList.add("d-none");
+    if (res == X_WINNER)
+        jumb.textContent = "Winner is: " + oGameData.nickNamePlayerOne + "! Spela igen?";
+    else if (res == O_WINNER)
+        jumb.textContent = "Winner is: " + oGameData.nickNamePlayerTwo + "! Spela igen?";
+    else if (res == DRAW)
+        jumb.textContent = "Winner is: " + "Oavgjort" + "! Spela igen?";
+    oGameData.initGlobalObject();
 
-        document.querySelector("#game-area table").removeEventListener("click", executeMove);
-        document.querySelector("form").classList.remove("d-none");
-        document.querySelector("#game-area").classList.add("d-none");
-        if(res == X_WINNER)
-            jumb.textContent ="Winner is: " + oGameData.nickNamePlayerOne + "! Spela igen?";
-        else if(res == O_WINNER)
-            jumb.textContent ="Winner is: " + oGameData.nickNamePlayerTwo + "! Spela igen?";
-        else if(res == DRAW)
-            jumb.textContent ="Winner is: " + "Oavgjort" + "! Spela igen?";
-        oGameData.initGlobalObject();
-    
 }
+
+function byt() {
+
+    clearTimeout(oGameData.timerId);
+
+    if (oGameData.currentPlayer === M_P1)
+        oGameData.currentPlayer = M_P2;
+    else if (oGameData.currentPlayer === M_P2)
+        oGameData.currentPlayer = M_P1;
+
+    let playerNickname
+    if (oGameData.currentPlayer === M_P1)
+        playerNickname = oGameData.nickNamePlayerOne;
+    else if (oGameData.currentPlayer === M_P2)
+        playerNickname = oGameData.nickNamePlayerTwo;
+
+    document.querySelector(".jumbotron>h1").textContent = "Current player is: " + playerNickname + "!";
+
+    if(oGameData.timerEnabled)
+    {
+        oGameData.timerId = setTimeout(byt, 5000);
+        console.log("bytbyt");
+    }
+
+};
