@@ -62,6 +62,8 @@ oGameData.initGlobalObject = function () {
     //Timerid om användaren har klickat för checkboxen. 
     oGameData.timerId = null;
 
+    oGameData.currentTime = null;
+
 }
 
 
@@ -210,7 +212,7 @@ function executeMove(event) {
     if (oGameData.gameField[targetId] === "") {
         oGameData.gameField[targetId] = oGameData.currentPlayer;
         targetCell.textContent = oGameData.currentPlayer;
-        currentTime = 0;
+        oGameData.currentTime = 0;
         if (oGameData.currentPlayer === oGameData.playerOne) {
             targetCell.style.backgroundColor = oGameData.colorPlayerOne;
             setCurrentPlayer(oGameData.playerTwo, oGameData.nickNamePlayerTwo)
@@ -266,34 +268,37 @@ function gameOverProtocol() {
 const TIMER_INTERVALL_MSEC = 100;
 const TIMER_TURNTIME = 5;
 const TIMER_INTERVALL_SEC = 0.1;
-let currentTime;
-let timerText;
-let timeContainer
+
+
 function setupTimer() {
+    let timerText;
+    let timeContainer;
     oGameData.timerId = window.setInterval(updateTime, TIMER_INTERVALL_MSEC);
-    currentTime = 0;
+    oGameData.currentTime = 0;
     timeContainer = document.createElement("div");
     timeContainer.setAttribute("style", "margin-inline: auto; font-size: 30px");
     timerText = document.createTextNode("");
     timeContainer.appendChild(timerText);
 
     document.querySelector("main").appendChild(timeContainer);
+    //Update timer function
+    function updateTime() {
+       
+        //Set current player
+        if (oGameData.currentTime / 10 >= TIMER_TURNTIME) {
+            if (oGameData.currentPlayer == oGameData.playerOne) { setCurrentPlayer(oGameData.playerTwo, oGameData.nickNamePlayerTwo); }
+            else { setCurrentPlayer(oGameData.playerOne, oGameData.nickNamePlayerOne); }
+            oGameData.currentTime = 0;
+        }
+        //Displays current time
+        //toFixed() is for rounding numbers
+        oGameData.currentTime += 1;
+        let displayedTime = (oGameData.currentTime / 10).toFixed(1);
+        timerText.nodeValue = "Turn time: " + displayedTime;
+    }
 }
 
-//Update timer function
-function updateTime() {
-    //Set current player
-    if (currentTime/10 >= TIMER_TURNTIME) {
-        if (oGameData.currentPlayer == oGameData.playerOne) { setCurrentPlayer(oGameData.playerTwo, oGameData.nickNamePlayerTwo); }
-        else { setCurrentPlayer(oGameData.playerOne, oGameData.nickNamePlayerOne); }
-        currentTime = 0;
-    }
-    //Displays current time
-    //toFixed() is for rounding numbers
-    currentTime += 1;
-    let displayedTime = (currentTime/10).toFixed(1);
-    timerText.nodeValue = "Turn time: " + displayedTime;
-}
+
 
 function createCheckbox() {
     //Checkbox
