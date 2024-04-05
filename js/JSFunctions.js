@@ -379,11 +379,11 @@ function executeMove(clk) {
     document.querySelector("form").classList.remove("d-none");
     document.querySelector("#game-area").classList.add("d-none");
     if (res == X_WINNER)
-        jumb.textContent = "Winner is: " + M_P1 + "! Spela igen?";
+        jumb.textContent = "Vinnare är: " + M_P1 + "! Spela igen?";
     else if (res == O_WINNER)
-        jumb.textContent = "Winner is: " + M_P2 + "! Spela igen?";
+        jumb.textContent = "Vinnare är: " + M_P2 + "! Spela igen?";
     else if (res == DRAW)
-        jumb.textContent = "Winner is: " + "Oavgjort" + "! Spela igen?";
+        jumb.textContent = "Det blev: " + "Oavgjort" + "! Spela igen?";
     oGameData.initGlobalObject();
 
 }
