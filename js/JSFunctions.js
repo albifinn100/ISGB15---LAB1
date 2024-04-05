@@ -283,15 +283,15 @@ function setupTimer() {
 //Update timer function
 function updateTime() {
     //Set current player
-    if (currentTime >= TIMER_TURNTIME) {
+    if (currentTime/10 >= TIMER_TURNTIME) {
         if (oGameData.currentPlayer == oGameData.playerOne) { setCurrentPlayer(oGameData.playerTwo, oGameData.nickNamePlayerTwo); }
         else { setCurrentPlayer(oGameData.playerOne, oGameData.nickNamePlayerOne); }
         currentTime = 0;
     }
     //Displays current time
     //toFixed() is for rounding numbers
-    currentTime += TIMER_INTERVAL_SEC;
-    let displayedTime = (currentTime).toFixed(1);
+    currentTime += 1;
+    let displayedTime = (currentTime/10).toFixed(1);
     timerText.nodeValue = "Turn time: " + displayedTime;
 }
 
