@@ -263,13 +263,14 @@ function gameOverProtocol() {
 //Implement turn timer that switches current player after x seconds
 //Make a div with text showing the current timer time 
 //Append div to beneath the game-area
-const TIMER_INTERVALL = 100;
+const TIMER_INTERVALL_MSEC = 100;
 const TIMER_TURNTIME = 5;
+const TIMER_INTERVALL_SEC = 0.1;
 let currentTime;
 let timerText;
 let timeContainer
 function setupTimer() {
-    oGameData.timerId = window.setInterval(updateTime, TIMER_INTERVALL);
+    oGameData.timerId = window.setInterval(updateTime, TIMER_INTERVALL_MSEC);
     currentTime = 0;
     timeContainer = document.createElement("div");
     timeContainer.setAttribute("style", "margin-inline: auto; font-size: 30px");
@@ -282,7 +283,6 @@ function setupTimer() {
 //Update timer function
 function updateTime() {
     //Set current player
-    //currentTime is divided by 10 
     if (currentTime >= TIMER_TURNTIME) {
         if (oGameData.currentPlayer == oGameData.playerOne) { setCurrentPlayer(oGameData.playerTwo, oGameData.nickNamePlayerTwo); }
         else { setCurrentPlayer(oGameData.playerOne, oGameData.nickNamePlayerOne); }
@@ -290,7 +290,7 @@ function updateTime() {
     }
     //Displays current time
     //toFixed() is for rounding numbers
-    currentTime += 0.1;
+    currentTime += TIMER_INTERVAL_SEC;
     let displayedTime = (currentTime).toFixed(1);
     timerText.nodeValue = "Turn time: " + displayedTime;
 }
@@ -311,8 +311,9 @@ function createCheckbox() {
 
     //Append to div with button
     let btnContainer = document.querySelector("#div-with-a");
-    btnContainer.insertBefore(timerCheckbox, btnContainer.children[0]);
-    btnContainer.insertBefore(timerCheckboxLabel, btnContainer.children[0]);
+    let startBtn = btnContainer.children[0];
+    btnContainer.insertBefore(timerCheckbox, startBtn);
+    btnContainer.insertBefore(timerCheckboxLabel, timerCheckbox);
 }
 
 
