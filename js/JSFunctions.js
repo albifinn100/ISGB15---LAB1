@@ -259,7 +259,7 @@ function gameOverProtocol() {
     REF_GAMEAREA.classList.add("d-none");
     window.clearInterval(oGameData.timerId);
     oGameData.initGlobalObject();
-    document.querySelector("main").removeChild(timeContainer);
+    document.querySelector("#time-container").remove();
 }
 
 //Implement turn timer that switches current player after x seconds
@@ -276,6 +276,7 @@ function setupTimer() {
     oGameData.timerId = window.setInterval(updateTime, TIMER_INTERVALL_MSEC);
     oGameData.currentTime = 0;
     timeContainer = document.createElement("div");
+    timeContainer.setAttribute("id","time-container");
     timeContainer.setAttribute("style", "margin-inline: auto; font-size: 30px");
     timerText = document.createTextNode("");
     timeContainer.appendChild(timerText);
