@@ -30,6 +30,7 @@ body{
     }
     main{
         width: 70%;
+        text-align: center;
     }
     .jumbotron{
         background-color: #DEDEDE;
@@ -82,17 +83,24 @@ body{
         display: block;
     }
     #div-with-a{
-        border: 2px solid deepskyblue;
-        border-radius: 5px;
-        padding: 5px;
-        margin-top: 10px;
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
     }
     #div-with-a:hover{
-        box-shadow: skyblue 0px 0px 3px 3px;
+        
     }
     #div-with-a>a{
         text-decoration: none;
         color: deepskyblue;
+        border: 2px solid deepskyblue;
+        border-radius: 5px;
+        padding: 5px;
+        
+    }
+    #div-with-a>a:hover{
+        box-shadow: skyblue 0px 0px 3px 3px;
     }
     aside>a>img{
         width: 100%;
@@ -361,78 +369,3 @@ body{
   }
 }
 
-@media (min-width: 1180px) {
-  body{
-      display: flex;
-      flex-wrap: wrap;
-  }
-  main{
-      width: 70%;
-  }
-  .jumbotron{
-      background-color: #DEDEDE;
-      padding: 10px;
-  }
-  .text-center{
-      margin: auto;
-  }
-  .text-center>h1 {
-      text-align: center;
-      font-weight: bold;
-      font-size: 1.5rem;
-  }
-  .text-center>p{
-    font-weight: 400;
-  }
-  #errorMsg{
-      font-size: 1rem;
-  }
-  aside{
-      width: 300px;
-      height: auto;
-  }
-  #div-in-form{
-      border: solid 1px black;
-      border-radius: 5px;
-      box-shadow: 0px 5px 10px 5px lightgray;
-      display: flex;
-      flex-wrap: wrap;
-      width: 100%;
-      padding: 20px;
-      margin-top: 25px;
-  }
-  html{
-      font-size: 22px;
-  }
-  .col{
-      width: 49%;
-      padding-top: 5px;
-      padding-bottom: 5px;
-  }
-  input{
-      width: 80%;
-  }
-  input[type="color"]{
-      background-color: white;
-  }
-  label{
-      display: block;
-  }
-  #div-with-a{
-      border: 2px solid deepskyblue;
-      border-radius: 5px;
-      padding: 5px;
-      margin-top: 10px;
-  }
-  #div-with-a>a{
-      text-decoration: none;
-      color: deepskyblue;
-  }
-  aside>a>img{
-      width: 100%;
-  }
-  .gameArea>table{
-      margin-top: 40px;
-      margin-left: 200px;
-  }
-}
